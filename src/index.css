@@ -1,0 +1,58 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Option 5: The Storyteller's Cinematic Grid Palette */
+    --color-charcoal: #14110f;
+    --color-espresso: #1c1613;
+    --color-crimson: #7c1d1d;
+    --color-saffron: #d48c29;
+    --color-marigold: #f59e0b;
+    --color-champagne: #ebe0cc;
+    --color-gold-border: #c8a97e;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #14110f;
+    color: #ebe0cc;
+    touch-action: manipulation;
+  }
+
+  h1, h2, h3, .font-editorial {
+    font-family: var(--font-serif);
+  }
+
+  .font-mono-tabular {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.perspective-1200 {
+  perspective: 1200px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Filmstrip perforations pattern */
+.filmstrip-holes {
+  background-image: radial-gradient(circle, #14110f 38%, transparent 42%);
+  background-size: 22px 12px;
+  background-repeat: repeat-x;
+}
