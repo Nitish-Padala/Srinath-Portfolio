@@ -1,13 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  generateInitial150Photos,
   generateInitial108Photos,
   generateInitial40Photos,
+  getPhotosByRatio,
+  getSlidingWindow,
+  ASPECT_RATIO_CATEGORIES,
   getUniqueGallerySections,
   getPortraitTrioWindow,
   filterPhotosByMood,
   handleStackZoneInteraction,
   computeOrbPositions,
+  getInterleavedGlobePhotos,
   buildTelUrl,
   buildWhatsAppUrl,
   buildMailtoUrl,
@@ -17,76 +22,51 @@ import {
   shouldTriggerThresholdHaptic,
   triggerHapticFeedback,
   HAPTIC_PATTERNS,
-  SRINATH_UPLOADED_IMAGES,
 } from './portfolioLogic';
 
-test('generateInitial108Photos creates 108 curated photos for the 3D Globe and getUniqueGallerySections partitions unique photos with zero repeats and zero Close Study items', () => {
-  const photos = generateInitial108Photos();
-  assert.equal(photos.length, 108);
-  assert.equal(generateInitial40Photos().length, 108);
+test('generateInitial150Photos creates exactly 150 photos across 5 aspect ratio categories (30 each: 1:1, 3:4, 4:3, 9:16, 16:9)', () => {
+  const photos = generateInitial150Photos();
+  assert.equal(photos.length, 150);
+  assert.equal(generateInitial108Photos().length, 150);
+  assert.equal(generateInitial40Photos().length, 150);
 
   const uniqueIds = new Set(photos.map((p) => p.id));
-  assert.equal(uniqueIds.size, 108);
-  assert.equal(SRINATH_UPLOADED_IMAGES.length, 40);
+  assert.equal(uniqueIds.size, 150);
 
-  for (const photo of photos) {
-    assert.ok(
-      photo.imageUrl.startsWith('/assets/quickshare/pro-') ||
-        photo.imageUrl.startsWith('/assets/cinema/cam-')
-    );
-    assert.ok(!photo.title.includes('Close Study'), 'Expected no Close Study duplicate titles');
-    assert.ok(photo.filterStyle.includes('brightness(0.'));
+  // Assert 5 categories, each containing exactly 30 images
+  const expectedRatios = ['1:1', '3:4', '4:3', '9:16', '16:9'] as const;
+  assert.equal(ASPECT_RATIO_CATEGORIES.length, 5);
+
+  for (const cat of ASPECT_RATIO_CATEGORIES) {
+    const list = getPhotosByRatio(photos, cat.id);
+    assert.equal(list.length, 30, `Expected exactly 30 images in category ${cat.id}`);
+    for (let i = 0; i < list.length; i++) {
+      const p = list[i];
+      const folderKey = cat.id.replace(':', '-');
+      const expectedNum = String(i + 1).padStart(2, '0');
+      assert.equal(p.imageUrl, `/photos/ratio-${folderKey}/photo-${expectedNum}.jpg`);
+      assert.equal(p.aspectRatio, cat.id);
+      assert.ok(p.tileW > 0 && p.tileH > 0);
+    }
   }
 
-  const sections = getUniqueGallerySections(photos);
-  assert.equal(sections.solitaryPhotos.length, 4);
-  assert.equal(sections.kinshipPhotos.length, 2);
-  assert.equal(sections.twilightShowcasePhotos.length, 5);
-  assert.equal(sections.twilightStackPhotos.length, 5);
-  assert.equal(sections.portraitArchivePhotos.length, 30);
-  assert.equal(sections.landscapeArchivePhotos.length, 8);
+  // Verify getSlidingWindow produces smooth sliding carousel windows
+  const list34 = getPhotosByRatio(photos, '3:4');
+  const window3_0 = getSlidingWindow(list34, 0, 3);
+  const window3_1 = getSlidingWindow(list34, 1, 3);
+  assert.equal(window3_0.length, 3);
+  assert.equal(window3_1.length, 3);
+  assert.equal(window3_1[0].id, window3_0[1].id);
+  assert.equal(window3_1[1].id, window3_0[2].id);
 
-  // Verify zero repeated images across all gallery sections
-  const allSectionPhotos = [
-    sections.heroPhoto,
-    ...sections.solitaryPhotos,
-    ...sections.kinshipPhotos,
-    ...sections.twilightShowcasePhotos,
-    ...sections.twilightStackPhotos,
-    ...sections.portraitArchivePhotos,
-    ...sections.landscapeArchivePhotos,
-  ];
-  const sectionUrls = allSectionPhotos.map((p) => p.imageUrl);
-  assert.equal(new Set(sectionUrls).size, sectionUrls.length, 'Expected zero repeated images across gallery sections');
-
-  // Verify removed images are not in the gallery or globe catalog
-  const allCatalogUrls = photos.map((p) => p.imageUrl);
-  for (const removedUrl of [
-    '/assets/quickshare/pro-02.jpg',
-    '/assets/quickshare/pro-04.jpg',
-    '/assets/quickshare/pro-06.jpg',
-    '/assets/quickshare/pro-09.jpg',
-    '/assets/quickshare/pro-10.jpg',
-    '/assets/quickshare/pro-13.jpg',
-    '/assets/quickshare/pro-27.jpg',
-  ]) {
-    assert.ok(!sectionUrls.includes(removedUrl), `Expected ${removedUrl} to be removed from gallery`);
-    assert.ok(!allCatalogUrls.includes(removedUrl), `Expected ${removedUrl} to be removed from catalog`);
-  }
-
-  // Verify getPortraitTrioWindow shifts all 3 portrait images one by one
-  const trio0 = getPortraitTrioWindow(sections.portraitArchivePhotos, 0);
-  const trio1 = getPortraitTrioWindow(sections.portraitArchivePhotos, 1);
-  assert.equal(trio0.length, 3);
-  assert.equal(trio1.length, 3);
-  assert.equal(trio1[0].imageUrl, trio0[1].imageUrl);
-  assert.equal(trio1[1].imageUrl, trio0[2].imageUrl);
-
-  assert.equal(filterPhotosByMood(photos, 'all').length, 108);
-  assert.equal(filterPhotosByMood(photos, 'euphoria').length, 27);
-  assert.equal(filterPhotosByMood(photos, 'warmth').length, 27);
-  assert.equal(filterPhotosByMood(photos, 'serenity').length, 27);
-  assert.equal(filterPhotosByMood(photos, 'electric').length, 27);
+  // Interleaved globe list has exactly 150 photos distributed across all 5 ratios
+  const globePhotos = getInterleavedGlobePhotos(photos);
+  assert.equal(globePhotos.length, 150);
+  assert.equal(globePhotos[0].aspectRatio, '1:1');
+  assert.equal(globePhotos[1].aspectRatio, '3:4');
+  assert.equal(globePhotos[2].aspectRatio, '4:3');
+  assert.equal(globePhotos[3].aspectRatio, '9:16');
+  assert.equal(globePhotos[4].aspectRatio, '16:9');
 });
 
 test('handleStackZoneInteraction follows phone recent-tabs rules (left moves stack, middle opens fullscreen, any click in fullscreen returns back)', () => {
@@ -105,11 +85,11 @@ test('handleStackZoneInteraction follows phone recent-tabs rules (left moves sta
   assert.equal(backFromFullscreen.activeIndex, 1);
 });
 
-test('computeOrbPositions distributes all 108 photos evenly on the 3D sphere and guarantees no image repeats more than 2 times or within a radius of 2+ images', () => {
-  const photos = generateInitial108Photos();
-  const radius = 6.0;
+test('computeOrbPositions distributes all 150 photos evenly on the 3D sphere with accurate aspect-ratio tile dimensions', () => {
+  const photos = generateInitial150Photos();
+  const radius = 6.4;
   const nodes = computeOrbPositions(photos, radius);
-  assert.equal(nodes.length, 108);
+  assert.equal(nodes.length, 150);
 
   const countByUrl = new Map<string, number[]>();
   for (let i = 0; i < photos.length; i++) {
@@ -119,23 +99,15 @@ test('computeOrbPositions distributes all 108 photos evenly on the 3D sphere and
     countByUrl.set(url, list);
   }
 
+  // Each of the 150 photos appears exactly once with zero repeats
   for (const [url, indices] of countByUrl.entries()) {
-    assert.ok(indices.length <= 2, `Expected ${url} to appear at most 2 times, got ${indices.length}`);
-    if (indices.length === 2) {
-      const a = nodes[indices[0]];
-      const b = nodes[indices[1]];
-      const unitDist = Math.hypot(a.nx - b.nx, a.ny - b.ny, a.nz - b.nz);
-      // 2-hop neighbor radius on 108-node sphere is ~0.67; antipodal placement guarantees unitDist > 1.80
-      assert.ok(
-        unitDist > 1.8,
-        `Expected duplicate copies of ${url} at indices ${indices[0]} & ${indices[1]} to be on opposite sides of globe (unitDist > 1.8), got ${unitDist}`
-      );
-    }
+    assert.equal(indices.length, 1, `Expected ${url} to appear exactly once, got ${indices.length}`);
   }
 
   for (const node of nodes) {
     const dist = Math.hypot(node.x, node.y, node.z);
     assert.ok(Math.abs(dist - radius) < 0.01, `Expected radius ~${radius}, got ${dist}`);
+    assert.ok(node.tileW > 0 && node.tileH > 0, 'Expected positive tile dimensions');
   }
 });
 

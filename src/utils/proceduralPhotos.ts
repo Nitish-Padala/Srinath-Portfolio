@@ -52,14 +52,45 @@ export function loadCachedImageElement(url: string): Promise<HTMLImageElement> {
 }
 
 /**
- * Renders a low-key darkroom-toned, aspect-cropped (`object-fit: cover` around `photo.focalX` & `photo.focalY`
- * with `photo.cropZoom` support) canvas of Srinath's real photograph for tightly packed 3D Photo Globe tiles.
+ * Renders a low-key darkroom-toned canvas of Srinath's real photograph matching its exact
+ * native aspect ratio (1:1, 3:4, 4:3, 9:16, 16:9) for tightly packed, gap-free 3D Photo Globe tiles.
  */
 export async function renderEditedGlobeTileCanvas(
   photo: PortfolioPhoto,
-  targetWidth = 520,
-  targetHeight = 400
+  customWidth?: number,
+  customHeight?: number
 ): Promise<HTMLCanvasElement> {
+  let targetWidth = customWidth || 512;
+  let targetHeight = customHeight || 512;
+
+  if (!customWidth || !customHeight) {
+    switch (photo.aspectRatio) {
+      case '1:1':
+        targetWidth = 512;
+        targetHeight = 512;
+        break;
+      case '3:4':
+        targetWidth = 480;
+        targetHeight = 640;
+        break;
+      case '4:3':
+        targetWidth = 640;
+        targetHeight = 480;
+        break;
+      case '9:16':
+        targetWidth = 360;
+        targetHeight = 640;
+        break;
+      case '16:9':
+        targetWidth = 640;
+        targetHeight = 360;
+        break;
+      default:
+        targetWidth = 512;
+        targetHeight = 512;
+    }
+  }
+
   const canvas = document.createElement('canvas');
   canvas.width = targetWidth;
   canvas.height = targetHeight;
@@ -88,7 +119,7 @@ export async function renderEditedGlobeTileCanvas(
     const sHeight = baseH / zoom;
 
     const fx = Math.max(0, Math.min(1, photo.focalX ?? 0.5));
-    const fy = Math.max(0, Math.min(1, photo.focalY ?? 0.35));
+    const fy = Math.max(0, Math.min(1, photo.focalY ?? 0.5));
 
     const maxSx = Math.max(0, srcW - sWidth);
     const maxSy = Math.max(0, srcH - sHeight);
@@ -107,26 +138,26 @@ export async function renderEditedGlobeTileCanvas(
     ctx.restore();
 
     // Subtle low-key warm darkroom glaze so no highlight looks over-bright on the 3D Globe
-    ctx.fillStyle = 'rgba(20, 15, 11, 0.14)';
+    ctx.fillStyle = 'rgba(20, 15, 11, 0.12)';
     ctx.fillRect(0, 0, targetWidth, targetHeight);
 
     // Warm saffron-gold & charcoal optical radial vignette
     const vig = ctx.createRadialGradient(
       targetWidth / 2,
       targetHeight / 2,
-      targetWidth * 0.28,
+      targetWidth * 0.32,
       targetWidth / 2,
       targetHeight / 2,
       targetWidth * 0.72
     );
     vig.addColorStop(0, 'rgba(0,0,0,0)');
-    vig.addColorStop(0.7, 'rgba(20, 16, 13, 0.16)');
-    vig.addColorStop(1, 'rgba(14, 11, 9, 0.48)');
+    vig.addColorStop(0.7, 'rgba(20, 16, 13, 0.14)');
+    vig.addColorStop(1, 'rgba(14, 11, 9, 0.42)');
     ctx.fillStyle = vig;
     ctx.fillRect(0, 0, targetWidth, targetHeight);
 
-    // Crisp Option 5 Champagne-Gold museum border around every tile
-    ctx.strokeStyle = 'rgba(200, 169, 126, 0.62)';
+    // Crisp Champagne-Gold museum border around every tile
+    ctx.strokeStyle = 'rgba(200, 169, 126, 0.58)';
     ctx.lineWidth = 4;
     ctx.strokeRect(2, 2, targetWidth - 4, targetHeight - 4);
   } catch {

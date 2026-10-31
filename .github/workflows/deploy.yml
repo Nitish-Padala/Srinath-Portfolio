@@ -24,16 +24,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: 20
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm install
+        run: bun install
+
+      - name: Run verification tests
+        run: bun test
 
       - name: Build static portfolio
-        run: npm run build:static
+        run: bun run build:static
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3

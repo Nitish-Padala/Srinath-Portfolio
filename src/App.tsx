@@ -11,7 +11,7 @@ import {
   PortfolioPhoto,
   computeSwipeVisualTransform,
   evaluateFullscreenSwipeGesture,
-  generateInitial108Photos,
+  generateInitial150Photos,
   shouldTriggerThresholdHaptic,
   triggerHapticFeedback,
 } from './utils/portfolioLogic';
@@ -25,7 +25,7 @@ import { OrbGlobeGallery3D } from './components/OrbGlobeGallery3D';
 import { BookingFooter } from './components/BookingFooter';
 
 export default function App() {
-  const [allPhotos] = useState<PortfolioPhoto[]>(() => generateInitial108Photos());
+  const [allPhotos] = useState<PortfolioPhoto[]>(() => generateInitial150Photos());
   const [fullscreenPhoto, setFullscreenPhoto] = useState<PortfolioPhoto | null>(null);
 
   // Fullscreen Swipe-to-Dismiss gesture & haptic state
@@ -261,12 +261,15 @@ export default function App() {
                 swipeVisual.thresholdReached ? 'bg-[#f59e0b]' : 'bg-[#c8a97e]/40'
               }`}
             />
-            <div className="text-xs sm:text-sm font-serif text-[#ebe0cc]/90">
+            <div className="text-xs sm:text-sm font-serif text-[#ebe0cc]/90 flex items-center gap-2">
               <span>{fullscreenPhoto.title}</span>
+              <span className="text-[10px] font-mono uppercase tracking-wider text-[#d48c29] px-2 py-0.5 rounded bg-[#1c1613] border border-[#c8a97e]/35">
+                {fullscreenPhoto.aspectRatio}
+              </span>
             </div>
           </div>
 
-          {/* Center Full-Resolution Uncropped Photograph */}
+          {/* Center Full-Resolution Uncropped Photograph in Exact Original Size */}
           <div
             data-testid="fullscreen-photo-card"
             style={{
@@ -276,7 +279,7 @@ export default function App() {
                 ? 'none'
                 : 'transform 180ms cubic-bezier(0.16, 1, 0.3, 1), opacity 160ms ease-out',
             }}
-            className="my-auto max-w-5xl w-full mx-auto overflow-hidden rounded-2xl border border-[#c8a97e]/45 shadow-2xl bg-[#120e0c] pointer-events-none"
+            className="my-auto max-w-5xl w-full mx-auto overflow-hidden rounded-2xl border border-[#c8a97e]/45 shadow-2xl bg-[#120e0c] pointer-events-none flex items-center justify-center p-2 sm:p-4"
           >
             <img
               src={renderPhotoDataUrl(fullscreenPhoto, 1280, 860)}
@@ -285,7 +288,7 @@ export default function App() {
               style={{
                 filter: fullscreenPhoto.filterStyle,
               }}
-              className="w-full max-h-[82vh] object-contain mx-auto"
+              className="w-auto h-auto max-h-[82vh] max-w-full object-contain mx-auto rounded-lg"
             />
           </div>
 
