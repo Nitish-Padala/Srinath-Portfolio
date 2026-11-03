@@ -4,6 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <script>
+      // Clear legacy service worker registrations & stale caches immediately
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function (registrations) {
+          for (var r of registrations) {
+            r.unregister();
+          }
+        }).catch(function () {});
+      }
+      if ('caches' in window) {
+        caches.keys().then(function (names) {
+          for (var name of names) {
+            caches.delete(name);
+          }
+        }).catch(function () {});
+      }
       window.addEventListener(
         'unhandledrejection',
         function (e) {
@@ -26,37 +41,26 @@
         },
         true
       );
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker
-          .getRegistrations()
-          .then(function (regs) {
-            regs.forEach(function (r) {
-              r.unregister();
-            });
-          })
-          .catch(function () {});
-      }
     </script>
-    <title>Srinath — Photography Portfolio</title>
-    <meta name="description" content="Warm interactive photography portfolio for Srinath featuring 4 mood card stacks, a 3D photo globe, and direct booking." />
-    <meta property="og:title" content="Srinath — Photography Portfolio" />
-    <meta property="og:description" content="Warm interactive photography portfolio for Srinath featuring 4 mood card stacks, a 3D photo globe, and direct booking." />
+    <title>Srinath Photography — The Vintage Romance</title>
+    <meta name="description" content="Srinath Photography — The Vintage Romance: Luxury mobile-first South Indian wedding and visual storytelling portfolio." />
+    <meta property="og:title" content="Srinath Photography — The Vintage Romance" />
+    <meta property="og:description" content="Luxury mobile-first South Indian wedding and visual storytelling portfolio with 3D photo globe and curated 150 frames." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#14110f" />
+    <meta name="theme-color" content="#18110E" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Srinath" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="icon" type="image/svg+xml" href="./icon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet" />
   </head>
-  <body class="bg-[#14110f] text-[#ebe0cc] antialiased selection:bg-[#d48c29] selection:text-[#14110f] overflow-x-hidden">
+  <body class="bg-[#18110E] text-[#F5F0E6] antialiased selection:bg-[#C85A43] selection:text-[#F5F0E6] overflow-x-hidden">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

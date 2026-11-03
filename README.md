@@ -1,55 +1,80 @@
-# Srinath — 3D Emotion & Visual Photography Portfolio
+# Srinath Photography — The Vintage Romance
 
-A high-performance, mobile-first 3D interactive photography portfolio for **Srinath** featuring:
-- **3D Fibonacci Photo Globe**: 108 curated, low-key cinema-graded photographs with 80% default zoom on page load, 200% smooth zoom, and antipodal distribution (zero adjacent or nearby repeats).
-- **Recent-Tabs Card Stacks**: Tactile mobile card decks with swipe gestures and haptic feedback.
-- **Categorized Galleries**:
-  - *Solitary & Lifestyle Narratives* (1:1 ratio square frames)
-  - *Portraits & Intimate Kinship* (1:1 ratio square frames)
-  - *Twilight & Horizon Alchemy* (curated golden hour & twilight compositions)
-  - *Portrait Series* (sliding trio window, shifts 1-by-1 on navigation)
-  - *Landscape Series* (single-frame focus)
-- **Full-Screen Viewer**: Immersive swipe-to-dismiss gestures (swipe up/down) with tactile haptic feedback.
-- **Direct Concierge**: One-tap WhatsApp, Direct Call, Email inquiries, and commission requests.
+> **Live Website:** [https://nitish-padala.github.io/Srinath-Portfolio/](https://nitish-padala.github.io/Srinath-Portfolio/)
+
+A luxury mobile-first editorial wedding and visual storytelling portfolio for **Srinath**, meticulously crafted following the **"MOBILE-FIRST PORTFOLIO DESIGN SPECIFICATION & ASSETS: THE VINTAGE ROMANCE"** blueprint.
 
 ---
 
-## Free Online Deployment Options
+## 🎨 Design System & Palette
 
-### Option 1: GitHub Pages (100% Free Forever)
-1. Push this repository to your GitHub profile (`main` branch).
-2. On GitHub, go to **Settings** > **Pages**.
-3. Under **Build and deployment** > **Source**, choose **GitHub Actions**.
-4. The included `.github/workflows/deploy.yml` workflow will automatically build and publish your site at:
-   ```text
-   https://<your-github-username>.github.io/<repository-name>/
-   ```
-
-### Option 2: Vercel / Netlify / Cloudflare Pages (100% Free, 1-Click)
-1. Sign in to [Vercel](https://vercel.com) or [Netlify](https://netlify.com) using your GitHub account.
-2. Click **Add New Project** and select this repository.
-3. Keep default settings (`Framework: Vite`, `Build Command: vite build`, `Output Directory: dist`).
-4. Click **Deploy**. Your portfolio will be live instantly with a free permanent URL (e.g. `https://srinath-portfolio.vercel.app`) and free SSL.
+- **Soft Cream (`#F5F0E6`)**: Primary high-contrast luxury serif typography (`Playfair Display`).
+- **Warm Beige (`#EAE0D5`)**: Lens specs, camera HUD guides, and secondary narrative details.
+- **Muted Rust (`#C85A43`)**: Accent highlights, Call CTA button, and active dot indicators.
+- **Dark Espresso Brown (`#3E2020`)**: Device framing, VIP inquiry button, and deep luxury shadows.
+- **Espresso Foundation (`#18110E`)**: High-contrast dark photography backdrop.
 
 ---
 
-## Local Development
+## ✨ Features & Architecture
 
-**Prerequisites:** [Bun](https://bun.sh) or [Node.js](https://nodejs.org) (v18+)
+### 1. Cover & Branding System (`GlobalHeader.tsx`)
+- High-elegance Playfair Display header with mobile screen pull indicator.
+- Off-canvas luxury slide-out drawer featuring numbered chapters (`01 The Showcase` through `07 Viewfinder & VIP Booking`).
+- One-tap VIP inquiry direct action button.
 
-1. Install dependencies:
-   ```bash
-   bun install
-   # or: npm install
-   ```
-2. Start the development server:
-   ```bash
-   bun run dev
-   # or: npm run dev
-   ```
-3. Open `http://localhost:3000` in your browser.
+### 2. Auto-Swiping Hero & Lens Metadata (`AutoSwipingHero.tsx`)
+- 5-second gentle cross-fade auto-play carousel inside a mobile device frame.
+- Real-world metadata pill: `Mylapore, Chennai | 50mm f/1.2`.
+- Cinematic typography: *"Capturing Every Ritual, Every Emotion"*.
+- Interactive bottom dot pagination and 1-tap uncropped full-screen view.
 
-4. Run tests:
-   ```bash
-   bun test
-   ```
+### 3. Ratio-Specific Editorial Galleries (`VintageGalleries.tsx`)
+- **16:9 Cinematic Horizon**: Horizontal swipe carousel featuring panoramic ritual ceremonies.
+- **1:1 Square Mosaic**: Seamless grid with zero distortion and hairline borders.
+- **3:4 & 4:3 Staggered Editorial Masonry**: Asymmetric magazine-style layout pairing intimate portraits with courtyard architecture.
+- **9:16 Apple Recent Apps 3D Swiper**: Multi-layered card deck with 3D perspective transforms (`perspective: 1400px`), smooth touch swiping, and active card elevation.
+
+### 4. The 3D Photo Globe (`OrbGlobeGallery3D.tsx`)
+- **90% Mobile Screen Proportions**: Circular framing (`w-[90vw] max-w-[540px] aspect-square`).
+- **Strict 360° Rotation (No-Zoom / No-Pan)**: `controls.enableZoom = false` and `controls.enablePan = false`. Eliminates mobile scroll hijacking while providing seamless touch rotation.
+- **Optical Center Reticle**: Dynamic live center-photo title pill tracking the photograph facing the lens.
+- **1-Tap Direct Opening**: Instant raycasting without requiring a long-press.
+
+### 5. Viewfinder Bio & VIP Contact Hub (`ViewfinderBioContact.tsx`)
+- **Realistic Camera Viewfinder HUD**: Rule-of-Thirds grid, pulsing autofocus brackets `[   ]`, real-time shooting parameters (`ISO 400`, `1/250s`, `f/1.4`, `RAW + L`), battery gauge, and rec dot.
+- **Functional Shutter Button**: Interactive shutter button with haptic feedback and screen flash recoil.
+- **Tinder-Style Polaroid Stack**: Layered physical polaroids with handwritten captions (*"Kalyanam Moments"*, *"Thanjavur Palace"*).
+- **VIP Contact Actions**: Direct WhatsApp button (`#25D366`), Direct Call button (`#C85A43`), and Date Reservation form with Dark Espresso pill submit button (`#3E2020`).
+
+### 6. Full-Screen Uncropped Modal
+- Exact original aspect ratio display (`object-contain`).
+- Touch swipe-up / swipe-down gesture dismissal with haptic snap-back.
+
+---
+
+## 🚀 Live Deployment
+
+The site is automatically deployed via GitHub Actions on every push to `main`:
+
+- **Live URL:** [https://nitish-padala.github.io/Srinath-Portfolio/](https://nitish-padala.github.io/Srinath-Portfolio/)
+
+> **Tip:** If you previously visited the website on your phone or desktop and see an older version, please perform a quick hard-refresh (`Ctrl + F5` on Windows, `Cmd + Shift + R` on Mac, or clear browser cache in mobile Chrome/Safari) to purge any old service worker caches.
+
+---
+
+## 🛠️ Local Development
+
+```bash
+# Install dependencies
+bun install   # or: npm install
+
+# Run verification tests
+bun test
+
+# Run local development server
+bun run dev   # or: npm run dev
+
+# Build production bundle
+bun run build:static
+```
