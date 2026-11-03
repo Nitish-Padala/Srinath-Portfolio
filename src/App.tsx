@@ -261,11 +261,8 @@ export default function App() {
                 swipeVisual.thresholdReached ? 'bg-[#f59e0b]' : 'bg-[#c8a97e]/40'
               }`}
             />
-            <div className="text-xs sm:text-sm font-serif text-[#ebe0cc]/90 flex items-center gap-2">
+            <div className="text-xs sm:text-sm font-serif text-[#ebe0cc]/90">
               <span>{fullscreenPhoto.title}</span>
-              <span className="text-[10px] font-mono uppercase tracking-wider text-[#d48c29] px-2 py-0.5 rounded bg-[#1c1613] border border-[#c8a97e]/35">
-                {fullscreenPhoto.aspectRatio}
-              </span>
             </div>
           </div>
 

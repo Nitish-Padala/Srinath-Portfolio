@@ -21,62 +21,62 @@ export const ASPECT_RATIO_CATEGORIES: AspectRatioCategory[] = [
   {
     id: '1:1',
     folder: 'ratio-1-1',
-    label: '1:1 Square Format',
-    subLabel: 'Fine-Art & Symmetrical Studies',
+    label: 'Fine Art & Symmetric Studios',
+    subLabel: 'Central compositions and sacred geometry',
     description: 'Central compositions, floral details, and sacred geometry in square balance.',
     cssAspect: 'aspect-square',
     widthRatio: 1,
     heightRatio: 1,
-    tileW: 1.98,
-    tileH: 1.98,
+    tileW: 1.26,
+    tileH: 1.26,
   },
   {
     id: '3:4',
     folder: 'ratio-3-4',
-    label: '3:4 Vertical Portrait',
-    subLabel: 'Bridal & Candid Portraiture',
+    label: 'Bridal & Candid Portraits',
+    subLabel: 'Intimate expressions and timeless human kinship',
     description: 'Classic medium format portraits capturing raw human expression and kinship.',
     cssAspect: 'aspect-[3/4]',
     widthRatio: 3,
     heightRatio: 4,
-    tileW: 1.72,
-    tileH: 2.29,
+    tileW: 1.08,
+    tileH: 1.44,
   },
   {
     id: '4:3',
     folder: 'ratio-4-3',
-    label: '4:3 Classic Landscape',
-    subLabel: 'Heritage & Environmental Frames',
+    label: 'Ritual & Documentary Frames',
+    subLabel: 'Heritage courtyards and environmental storytelling',
     description: 'Architectural arches, courtyards, and riverside vistas in 4:3 classical framing.',
     cssAspect: 'aspect-[4/3]',
     widthRatio: 4,
     heightRatio: 3,
-    tileW: 2.29,
-    tileH: 1.72,
+    tileW: 1.44,
+    tileH: 1.08,
   },
   {
     id: '9:16',
     folder: 'ratio-9-16',
-    label: '9:16 Cinematic Story',
-    subLabel: 'Tall Mobile & Vertical Editorial',
+    label: 'Cinematic Vertical Stories',
+    subLabel: 'Dramatic temple colonnades and vertical motion',
     description: 'Full-height mobile perspectives, grand temple colonnades, and vertical motion.',
     cssAspect: 'aspect-[9/16]',
     widthRatio: 9,
     heightRatio: 16,
-    tileW: 1.49,
-    tileH: 2.65,
+    tileW: 0.92,
+    tileH: 1.52,
   },
   {
     id: '16:9',
     folder: 'ratio-16-9',
-    label: '16:9 Horizon Panorama',
-    subLabel: 'Widescreen Dusk & Panoramic Rituals',
+    label: 'Epic Landscape & Horizon Alchemy',
+    subLabel: 'Expansive horizons and molten sunset waters',
     description: 'Expansive horizons, molten sunsets, twilight waters, and grand procession views.',
     cssAspect: 'aspect-[16/9]',
     widthRatio: 16,
     heightRatio: 9,
-    tileW: 2.65,
-    tileH: 1.49,
+    tileW: 1.52,
+    tileH: 0.92,
   },
 ];
 
@@ -186,9 +186,9 @@ export const EMOTION_CATEGORIES: EmotionCategory[] = [
   },
 ];
 
-const CINEMA_GRADE_WARM = 'brightness(0.92) contrast(1.08) saturate(1.06)';
-const CINEMA_GRADE_DEEP = 'brightness(0.88) contrast(1.12) saturate(1.05)';
-const CINEMA_GRADE_SILK = 'brightness(0.94) contrast(1.07) saturate(1.08)';
+const CINEMA_GRADE_WARM = 'brightness(1.05) contrast(1.08) saturate(1.12)';
+const CINEMA_GRADE_DEEP = 'brightness(1.03) contrast(1.10) saturate(1.14)';
+const CINEMA_GRADE_SILK = 'brightness(1.06) contrast(1.06) saturate(1.10)';
 
 const TITLES_BY_RATIO: Record<PhotoAspectRatio, string[]> = {
   '1:1': [
@@ -467,15 +467,80 @@ export function getInterleavedGlobePhotos(allPhotos: PortfolioPhoto[]): Portfoli
   return interleaved.length === allPhotos.length ? interleaved : allPhotos;
 }
 
+export interface OrbRingDef {
+  latDeg: number;
+  count: number;
+}
+
+export const ORB_CONCENTRIC_RINGS: OrbRingDef[] = [
+  { latDeg: 58, count: 8 },
+  { latDeg: 44, count: 13 },
+  { latDeg: 29, count: 19 },
+  { latDeg: 15, count: 23 },
+  { latDeg: 0, count: 24 },
+  { latDeg: -15, count: 23 },
+  { latDeg: -29, count: 19 },
+  { latDeg: -44, count: 13 },
+  { latDeg: -58, count: 8 },
+];
+
 /**
- * Computes evenly distributed 3D spherical coordinates (Fibonacci Sphere)
- * for all 150 photos with custom aspect-ratio tile dimensions and tight gap-free packing.
+ * Computes concentric circular ring coordinates for all 150 photos on the 3D sphere.
+ * Arranges photos into 9 neat horizontal circular rings (latitudes) where photos sit
+ * side-by-side with zero corner overlap, forming a pristine, symmetrical spherical gallery.
  */
 export function computeOrbPositions(photos: PortfolioPhoto[], radius = 6.4): OrbNodePosition[] {
   const n = photos.length;
   if (n === 0) return [];
-  const goldenRatio = (1 + Math.sqrt(5)) / 2;
 
+  // When n === 150, use the clean concentric circular ring architecture
+  if (n === 150) {
+    return photos.map((photo, i) => {
+      let ringIndex = 0;
+      let localIndex = 0;
+      let countInRing = 1;
+      let latDeg = 0;
+      let runningSum = 0;
+
+      for (let k = 0; k < ORB_CONCENTRIC_RINGS.length; k++) {
+        const ring = ORB_CONCENTRIC_RINGS[k];
+        if (i < runningSum + ring.count) {
+          ringIndex = k;
+          localIndex = i - runningSum;
+          countInRing = ring.count;
+          latDeg = ring.latDeg;
+          break;
+        }
+        runningSum += ring.count;
+      }
+
+      const beta = (latDeg * Math.PI) / 180;
+      const ny = Math.sin(beta);
+      const ringRadius = Math.cos(beta);
+      const ringPhaseOffset = (ringIndex % 2) * (Math.PI / countInRing);
+      const theta = (2 * Math.PI * localIndex) / countInRing + ringPhaseOffset;
+
+      const nx = Math.cos(theta) * ringRadius;
+      const nz = Math.sin(theta) * ringRadius;
+
+      return {
+        photoId: photo.id,
+        index: i,
+        x: nx * radius,
+        y: ny * radius,
+        z: nz * radius,
+        nx,
+        ny,
+        nz,
+        phi: Math.PI / 2 - beta,
+        theta,
+        tileW: photo.tileW || 1.25,
+        tileH: photo.tileH || 1.25,
+      };
+    });
+  }
+
+  const goldenRatio = (1 + Math.sqrt(5)) / 2;
   return photos.map((photo, i) => {
     const yNorm = n === 1 ? 0 : 1 - (i / (n - 1)) * 2;
     const clampedY = Math.max(-0.96, Math.min(0.96, yNorm * 0.94));
@@ -497,8 +562,8 @@ export function computeOrbPositions(photos: PortfolioPhoto[], radius = 6.4): Orb
       nz,
       phi: Math.acos(clampedY),
       theta,
-      tileW: photo.tileW || 1.9,
-      tileH: photo.tileH || 1.9,
+      tileW: photo.tileW || 1.25,
+      tileH: photo.tileH || 1.25,
     };
   });
 }

@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, Camera, Grid, Maximize2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 import {
   PortfolioPhoto,
   PhotoAspectRatio,
@@ -23,8 +23,9 @@ interface InteractiveSingleStackProps {
 }
 
 /**
- * Aspect-Ratio Card:
- * Renders photograph in its exact native aspect ratio without artificial cropping or distortion.
+ * Editorial Aspect-Ratio Card:
+ * Renders photograph in its exact native proportions without artificial cropping or distortion.
+ * Pure photography focus: shows photograph and title only, no technical ratio tags or numbers.
  */
 const AspectRatioCard: React.FC<{
   photo: PortfolioPhoto;
@@ -61,7 +62,7 @@ const AspectRatioCard: React.FC<{
         className={`relative w-full ${cssAspectClass} rounded-2xl overflow-hidden border border-[#c8a97e]/35 bg-[#120e0c] shadow-xl group-hover:border-[#d48c29] transition-all`}
       >
         <img
-          src={renderPhotoDataUrl(photo, 900, 900)}
+          src={renderPhotoDataUrl(photo, 1000, 1000)}
           alt={photo.title}
           loading="lazy"
           style={{
@@ -74,13 +75,10 @@ const AspectRatioCard: React.FC<{
         <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity bg-[#14110f]/80 p-1.5 rounded-full border border-[#c8a97e]/40 text-[#f59e0b]">
           <Maximize2 className="w-3.5 h-3.5" />
         </div>
-        <div className="absolute bottom-3 left-3.5 right-3.5 flex items-baseline justify-between gap-2">
+        <div className="absolute bottom-3 left-3.5 right-3.5">
           <div className="text-xs sm:text-sm font-serif font-medium text-[#ebe0cc] truncate group-hover:text-[#f59e0b] transition-colors">
             {photo.title}
           </div>
-          <span className="text-[10px] uppercase font-mono tracking-wider text-[#c8a97e]/70 shrink-0 px-1.5 py-0.5 rounded bg-[#1c1613]/80 border border-[#c8a97e]/30">
-            {photo.aspectRatio}
-          </span>
         </div>
       </div>
     </button>
@@ -88,11 +86,10 @@ const AspectRatioCard: React.FC<{
 };
 
 /**
- * Interactive 1-image-at-a-time cascading 3D stack viewer for an aspect ratio category.
+ * Interactive 1-image-at-a-time cascading 3D stack viewer for an editorial photography collection.
  */
 const InteractiveSingleStack: React.FC<InteractiveSingleStackProps> = ({
   photos,
-  aspectRatio,
   sectionLabel,
   testIdPrefix,
   onOpenFullscreen,
@@ -137,9 +134,9 @@ const InteractiveSingleStack: React.FC<InteractiveSingleStackProps> = ({
     touchDeltaXRef.current = 0;
     setSwipeOffset(0);
 
-    if (delta < -40) {
+    if (delta < -35) {
       handleNext();
-    } else if (delta > 40) {
+    } else if (delta > 35) {
       handlePrev();
     }
   };
@@ -180,13 +177,10 @@ const InteractiveSingleStack: React.FC<InteractiveSingleStackProps> = ({
               isFront ? 'border-[#d48c29]/90' : 'border-[#c8a97e]/25'
             }`}
           >
-            {/* Top Box Bar: Photo Name & Aspect Ratio */}
+            {/* Top Box Bar: Photo Name Only */}
             <div className="h-9 px-4 bg-[#1c1613] border-b border-[#c8a97e]/25 flex items-center justify-between shrink-0">
               <span className="font-serif font-medium text-xs sm:text-sm text-[#ebe0cc] truncate tracking-wide">
                 {photo.title}
-              </span>
-              <span className="text-[10px] font-mono uppercase tracking-wider text-[#d48c29] px-2 py-0.5 rounded bg-[#120e0c] border border-[#c8a97e]/30">
-                {aspectRatio} · {cardIdx + 1}/{total}
               </span>
             </div>
 
@@ -201,7 +195,7 @@ const InteractiveSingleStack: React.FC<InteractiveSingleStackProps> = ({
                 }}
                 className="max-h-full max-w-full object-contain rounded-lg shadow-inner"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#14110f]/40 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#14110f]/35 via-transparent to-transparent pointer-events-none" />
             </div>
           </div>
         );
@@ -251,10 +245,7 @@ export const RecentTabsGallery: React.FC<RecentTabsGalleryProps> = ({
   allPhotos,
   onOpenFullscreen,
 }) => {
-  // Active selected Aspect Ratio category ('all' or '1:1' | '3:4' | '4:3' | '9:16' | '16:9')
-  const [selectedRatio, setSelectedRatio] = useState<PhotoAspectRatio | 'all'>('all');
-
-  // Category sliding indices (tracks current 3-card window index for each ratio)
+  // Category sliding indices (tracks current 3-card window index for each category)
   const [categoryIndices, setCategoryIndices] = useState<Record<PhotoAspectRatio, number>>({
     '1:1': 0,
     '3:4': 0,
@@ -263,7 +254,7 @@ export const RecentTabsGallery: React.FC<RecentTabsGalleryProps> = ({
     '16:9': 0,
   });
 
-  // Group photos by their 5 distinct aspect ratios
+  // Group photos by their 5 distinct photographic collections
   const photosByRatio = useMemo(() => {
     return {
       '1:1': getPhotosByRatio(allPhotos, '1:1'),
@@ -274,7 +265,7 @@ export const RecentTabsGallery: React.FC<RecentTabsGalleryProps> = ({
     };
   }, [allPhotos]);
 
-  // Featured Hero Photograph (uses photo-01 from 1:1 collection)
+  // Featured Hero Photograph
   const heroPhoto = useMemo(() => {
     return photosByRatio['1:1'][0] || allPhotos[0];
   }, [photosByRatio, allPhotos]);
@@ -296,13 +287,6 @@ export const RecentTabsGallery: React.FC<RecentTabsGalleryProps> = ({
       [ratio]: (prev[ratio] - 1 + list.length) % list.length,
     }));
   };
-
-  const activeCategories = useMemo(() => {
-    if (selectedRatio === 'all') {
-      return ASPECT_RATIO_CATEGORIES;
-    }
-    return ASPECT_RATIO_CATEGORIES.filter((c) => c.id === selectedRatio);
-  }, [selectedRatio]);
 
   return (
     <section
@@ -331,7 +315,7 @@ export const RecentTabsGallery: React.FC<RecentTabsGalleryProps> = ({
               src={renderPhotoDataUrl(heroPhoto, 1400, 900)}
               alt={heroPhoto.title}
               style={{
-                filter: 'brightness(0.90) contrast(1.10) saturate(1.06)',
+                filter: 'brightness(1.02) contrast(1.08) saturate(1.10)',
                 objectPosition: '50% 32%',
               }}
               className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
@@ -340,9 +324,6 @@ export const RecentTabsGallery: React.FC<RecentTabsGalleryProps> = ({
             <div className="absolute inset-0 bg-gradient-to-t from-[#14110f] via-[#14110f]/25 to-transparent" />
 
             <div className="absolute inset-x-0 bottom-8 sm:bottom-10 px-5 sm:px-10 max-w-2xl">
-              <span className="inline-block px-3 py-1 rounded-full text-[11px] font-mono tracking-widest uppercase bg-[#d48c29]/20 text-[#f59e0b] border border-[#d48c29]/40 mb-3">
-                Master Portfolio · 150 Frames
-              </span>
               <h1 className="font-serif text-3xl sm:text-5xl font-semibold text-[#ebe0cc] leading-[1.12] tracking-tight">
                 Capturing Every Ritual, Every Emotion.
               </h1>
@@ -351,68 +332,13 @@ export const RecentTabsGallery: React.FC<RecentTabsGalleryProps> = ({
         </div>
       )}
 
-      {/* 2. ASPECT RATIO NAVIGATION BAR */}
-      <div className="space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <Grid className="w-5 h-5 text-[#d48c29]" />
-            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#ebe0cc]">
-              Native Aspect Ratio Collections
-            </h2>
-          </div>
-          <span className="text-xs font-mono text-[#c8a97e]/80">
-            5 Ratios · 30 Dedicated Frames Each
-          </span>
-        </div>
-
-        {/* Tab Pills for switching or viewing all */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-          <button
-            type="button"
-            onClick={() => setSelectedRatio('all')}
-            className={`min-h-[38px] px-4 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all cursor-pointer whitespace-nowrap ${
-              selectedRatio === 'all'
-                ? 'bg-[#d48c29] text-[#14110f] font-semibold shadow-md'
-                : 'bg-[#1c1613] text-[#ebe0cc] border border-[#c8a97e]/40 hover:border-[#d48c29]'
-            }`}
-          >
-            All Categories (150)
-          </button>
-          {ASPECT_RATIO_CATEGORIES.map((cat) => {
-            const isActive = selectedRatio === cat.id;
-            return (
-              <button
-                key={`tab-${cat.id}`}
-                type="button"
-                onClick={() => setSelectedRatio(cat.id)}
-                className={`min-h-[38px] px-4 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all cursor-pointer whitespace-nowrap flex items-center gap-2 ${
-                  isActive
-                    ? 'bg-[#d48c29] text-[#14110f] font-semibold shadow-md'
-                    : 'bg-[#1c1613] text-[#ebe0cc] border border-[#c8a97e]/40 hover:border-[#d48c29]'
-                }`}
-              >
-                <span>{cat.label}</span>
-                <span
-                  className={`text-[10px] font-mono px-1.5 py-0.2 rounded ${
-                    isActive ? 'bg-[#14110f]/30 text-[#14110f]' : 'bg-[#14110f] text-[#c8a97e]'
-                  }`}
-                >
-                  {cat.id}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* 3. CATEGORY SECTIONS (3-Photo Sliding Strip + Cascading 3D Stack for Each Aspect Ratio) */}
+      {/* 2. EDITORIAL PHOTOGRAPHY COLLECTIONS */}
       <div className="space-y-16">
-        {activeCategories.map((category) => {
+        {ASPECT_RATIO_CATEGORIES.map((category) => {
           const ratio = category.id;
           const photos = photosByRatio[ratio] || [];
           const curIndex = categoryIndices[ratio] || 0;
           const trio = getSlidingWindow(photos, curIndex, 3);
-          const total = photos.length;
 
           return (
             <div
@@ -425,42 +351,37 @@ export const RecentTabsGallery: React.FC<RecentTabsGalleryProps> = ({
                 <div className="flex items-center gap-3">
                   <span className="w-3 h-3 rounded-full bg-[#d48c29] ring-2 ring-[#c8a97e]/40" />
                   <div>
-                    <h3 className="font-serif text-2xl sm:text-3xl font-semibold text-[#ebe0cc]">
+                    <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#ebe0cc]">
                       {category.label}
-                    </h3>
-                    <p className="text-xs text-[#c8a97e]/80 font-sans">
-                      {category.subLabel} · Original {ratio} Proportions
+                    </h2>
+                    <p className="text-xs text-[#c8a97e]/80 font-serif italic mt-0.5">
+                      {category.subLabel}
                     </p>
                   </div>
                 </div>
 
                 {/* Left/Right Sliding Window Navigation */}
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-mono text-[#c8a97e]/80 hidden sm:inline">
-                    Frame {curIndex + 1}–{((curIndex + 2) % total) + 1} of {total}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => handlePrevWindow(ratio)}
-                      aria-label={`Previous photos in ${category.label}`}
-                      className="w-9 h-9 rounded-full border border-[#c8a97e]/40 bg-[#1c1613] text-[#ebe0cc] hover:border-[#d48c29] hover:text-[#f59e0b] flex items-center justify-center transition-colors cursor-pointer"
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleNextWindow(ratio)}
-                      aria-label={`Next photos in ${category.label}`}
-                      className="w-9 h-9 rounded-full border border-[#c8a97e]/40 bg-[#1c1613] text-[#ebe0cc] hover:border-[#d48c29] hover:text-[#f59e0b] flex items-center justify-center transition-colors cursor-pointer"
-                    >
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handlePrevWindow(ratio)}
+                    aria-label={`Previous photos in ${category.label}`}
+                    className="w-9 h-9 rounded-full border border-[#c8a97e]/40 bg-[#1c1613] text-[#ebe0cc] hover:border-[#d48c29] hover:text-[#f59e0b] flex items-center justify-center transition-colors cursor-pointer"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleNextWindow(ratio)}
+                    aria-label={`Next photos in ${category.label}`}
+                    className="w-9 h-9 rounded-full border border-[#c8a97e]/40 bg-[#1c1613] text-[#ebe0cc] hover:border-[#d48c29] hover:text-[#f59e0b] flex items-center justify-center transition-colors cursor-pointer"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
 
-              {/* 3-Photo Showcase in Exact Native Aspect Ratio (Shifts 1-by-1) */}
+              {/* 3-Photo Showcase in Exact Native Proportions (Shifts 1-by-1) */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 items-start">
                 {trio.map((photo, slotIdx) => (
                   <AspectRatioCard
@@ -473,7 +394,7 @@ export const RecentTabsGallery: React.FC<RecentTabsGalleryProps> = ({
                 ))}
               </div>
 
-              {/* Interactive Single-Frame 3D Stack for this category */}
+              {/* Interactive Single-Frame 3D Stack */}
               <div className="pt-2">
                 <InteractiveSingleStack
                   photos={photos}

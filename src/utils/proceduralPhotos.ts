@@ -137,29 +137,10 @@ export async function renderEditedGlobeTileCanvas(
     ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, targetWidth, targetHeight);
     ctx.restore();
 
-    // Subtle low-key warm darkroom glaze so no highlight looks over-bright on the 3D Globe
-    ctx.fillStyle = 'rgba(20, 15, 11, 0.12)';
-    ctx.fillRect(0, 0, targetWidth, targetHeight);
-
-    // Warm saffron-gold & charcoal optical radial vignette
-    const vig = ctx.createRadialGradient(
-      targetWidth / 2,
-      targetHeight / 2,
-      targetWidth * 0.32,
-      targetWidth / 2,
-      targetHeight / 2,
-      targetWidth * 0.72
-    );
-    vig.addColorStop(0, 'rgba(0,0,0,0)');
-    vig.addColorStop(0.7, 'rgba(20, 16, 13, 0.14)');
-    vig.addColorStop(1, 'rgba(14, 11, 9, 0.42)');
-    ctx.fillStyle = vig;
-    ctx.fillRect(0, 0, targetWidth, targetHeight);
-
-    // Crisp Champagne-Gold museum border around every tile
-    ctx.strokeStyle = 'rgba(200, 169, 126, 0.58)';
-    ctx.lineWidth = 4;
-    ctx.strokeRect(2, 2, targetWidth - 4, targetHeight - 4);
+    // Crisp champagne-gold museum border around every photograph
+    ctx.strokeStyle = 'rgba(212, 140, 41, 0.75)';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(1.5, 1.5, targetWidth - 3, targetHeight - 3);
   } catch {
     ctx.fillStyle = photo.palette[0] || '#1c1613';
     ctx.fillRect(0, 0, targetWidth, targetHeight);
