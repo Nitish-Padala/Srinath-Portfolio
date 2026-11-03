@@ -1,6 +1,6 @@
 import { PortfolioPhoto } from './portfolioLogic';
 
-const OFFLINE_CACHE_NAME = 'srinath-portfolio-offline-v4';
+const OFFLINE_CACHE_NAME = 'srinath-portfolio-offline-v5';
 const loadedImageElementCache = new Map<string, Promise<HTMLImageElement>>();
 
 /**
@@ -22,13 +22,39 @@ export function resolveAssetUrl(url: string): string {
 }
 
 /**
- * Returns the real photograph URL for Srinath's portfolio cards and fullscreen viewer.
+ * Creates an elegant editorial SVG placeholder in The Vintage Romance luxury palette
+ * (#3E2020 Dark Espresso, #EAE0D5 Warm Beige, #F5F0E6 Soft Cream, #C85A43 Muted Rust)
+ * when photographs are awaiting upload.
  */
-export function renderPhotoDataUrl(photo: PortfolioPhoto, _width = 720, _height = 540): string {
+export function createLuxuryPlaceholderSvg(photo: PortfolioPhoto, width = 720, height = 540): string {
+  const w = Math.max(240, width);
+  const h = Math.max(180, height);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+    <defs>
+      <linearGradient id="pbg-${photo.index}" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#3E2020"/>
+        <stop offset="100%" stop-color="#241312"/>
+      </linearGradient>
+    </defs>
+    <rect width="${w}" height="${h}" fill="url(#pbg-${photo.index})"/>
+    <rect x="12" y="12" width="${w - 24}" height="${h - 24}" fill="none" stroke="#EAE0D5" stroke-opacity="0.35" stroke-width="1.5" rx="10"/>
+    <circle cx="${w / 2}" cy="${h / 2 - 20}" r="26" fill="#C85A43" fill-opacity="0.22" stroke="#C85A43" stroke-width="1.5"/>
+    <text x="${w / 2}" y="${h / 2 - 13}" font-family="Georgia, serif" font-size="15" fill="#F5F0E6" text-anchor="middle" font-weight="bold">${photo.aspectRatio}</text>
+    <text x="${w / 2}" y="${h / 2 + 24}" font-family="Georgia, serif" font-size="15" fill="#F5F0E6" text-anchor="middle" font-weight="500">${photo.title}</text>
+    <text x="${w / 2}" y="${h / 2 + 45}" font-family="monospace" font-size="10" fill="#EAE0D5" fill-opacity="0.75" text-anchor="middle" letter-spacing="1.5">FRAME #${photo.index} · AWAITING UPLOAD</text>
+  </svg>`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
+
+/**
+ * Returns the photograph URL or an elegant luxury placeholder when awaiting upload.
+ */
+export function renderPhotoDataUrl(photo: PortfolioPhoto, width = 720, height = 540): string {
   if (photo.customDataUrl) {
     return photo.customDataUrl;
   }
-  return resolveAssetUrl(photo.imageUrl);
+  // If custom photograph is not yet uploaded, return the elegant luxury SVG frame
+  return createLuxuryPlaceholderSvg(photo, width, height);
 }
 
 /**
@@ -52,8 +78,8 @@ export function loadCachedImageElement(url: string): Promise<HTMLImageElement> {
 }
 
 /**
- * Renders a low-key darkroom-toned canvas of Srinath's real photograph matching its exact
- * native aspect ratio (1:1, 3:4, 4:3, 9:16, 16:9) for tightly packed, gap-free 3D Photo Globe tiles.
+ * Renders an editorial canvas of Srinath's photograph matching its exact
+ * native aspect ratio (1:1, 3:4, 4:3, 9:16, 16:9) for the 3D Photo Globe tiles.
  */
 export async function renderEditedGlobeTileCanvas(
   photo: PortfolioPhoto,
@@ -98,7 +124,8 @@ export async function renderEditedGlobeTileCanvas(
   if (!ctx) return canvas;
 
   try {
-    const img = await loadCachedImageElement(photo.customDataUrl || photo.imageUrl);
+    const targetSource = photo.customDataUrl || createLuxuryPlaceholderSvg(photo, targetWidth, targetHeight);
+    const img = await loadCachedImageElement(targetSource);
     const srcW = img.naturalWidth || img.width || targetWidth;
     const srcH = img.naturalHeight || img.height || targetHeight;
 
@@ -126,8 +153,8 @@ export async function renderEditedGlobeTileCanvas(
     const sx = Math.min(maxSx, Math.max(0, maxSx * fx));
     const sy = Math.min(maxSy, Math.max(0, maxSy * fy));
 
-    // Deep charcoal base
-    ctx.fillStyle = '#14110f';
+    // Deep espresso base
+    ctx.fillStyle = '#3E2020';
     ctx.fillRect(0, 0, targetWidth, targetHeight);
 
     ctx.save();
@@ -137,15 +164,15 @@ export async function renderEditedGlobeTileCanvas(
     ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, targetWidth, targetHeight);
     ctx.restore();
 
-    // Crisp champagne-gold museum border around every photograph
-    ctx.strokeStyle = 'rgba(212, 140, 41, 0.75)';
-    ctx.lineWidth = 3;
+    // Warm beige hairline border around each globe tile
+    ctx.strokeStyle = '#EAE0D5';
+    ctx.lineWidth = 2.5;
     ctx.strokeRect(1.5, 1.5, targetWidth - 3, targetHeight - 3);
   } catch {
-    ctx.fillStyle = photo.palette[0] || '#1c1613';
+    ctx.fillStyle = '#3E2020';
     ctx.fillRect(0, 0, targetWidth, targetHeight);
-    ctx.strokeStyle = '#c8a97e';
-    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#EAE0D5';
+    ctx.lineWidth = 3;
     ctx.strokeRect(2, 2, targetWidth - 4, targetHeight - 4);
   }
 
@@ -153,117 +180,17 @@ export async function renderEditedGlobeTileCanvas(
 }
 
 /**
- * Silent background pre-cache of all real uploaded photographs for instant offline & swipe navigation.
+ * Silent background pre-cache of all uploaded photographs for instant offline & swipe navigation.
  */
 export async function warmCacheSilently(photos: PortfolioPhoto[]): Promise<void> {
   if (typeof window === 'undefined') return;
   const uniqueUrls = Array.from(new Set(photos.map((p) => p.customDataUrl || p.imageUrl)));
 
-  let cacheHandle: Cache | null = null;
-  if ('caches' in window) {
+  for (const url of uniqueUrls.slice(0, 30)) {
     try {
-      cacheHandle = await window.caches.open(OFFLINE_CACHE_NAME);
+      await loadCachedImageElement(url);
     } catch {
-      cacheHandle = null;
+      // Continue silently
     }
   }
-
-  for (const url of uniqueUrls) {
-    loadCachedImageElement(url).catch(() => {});
-    if (cacheHandle && url.startsWith('/')) {
-      try {
-        const res = await fetch(url);
-        if (res.ok) {
-          await cacheHandle.put(url, res.clone());
-        }
-      } catch {
-        // Ignore offline/quota errors
-      }
-    }
-  }
-}
-
-export type StudioGradePreset = 'golden-hour' | 'leica-chiaroscuro' | 'editorial-vibrant';
-
-/**
- * Applies a Low-Key Cinema Darkroom LUT (controlled highlight roll-off, rich shadow depth,
- * Saffron Gold & Burnt Crimson split-toning, and Charcoal optical vignette) on an HTML5 Canvas.
- */
-export async function applyStudioDarkroomRetouchDataUrl(
-  photo: PortfolioPhoto,
-  preset: StudioGradePreset = 'golden-hour'
-): Promise<string> {
-  const img = await loadCachedImageElement(photo.imageUrl);
-  const width = img.naturalWidth || img.width || 1280;
-  const height = img.naturalHeight || img.height || 960;
-
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return photo.imageUrl;
-
-  ctx.drawImage(img, 0, 0, width, height);
-  const imgData = ctx.getImageData(0, 0, width, height);
-  const data = imgData.data;
-
-  // Low-key gamma >= 1.12 so highlights never blow out
-  const gamma = preset === 'leica-chiaroscuro' ? 1.22 : preset === 'golden-hour' ? 1.14 : 1.16;
-  const contrastStrength = preset === 'leica-chiaroscuro' ? 0.22 : 0.16;
-  const saturationBoost = preset === 'editorial-vibrant' ? 1.18 : preset === 'leica-chiaroscuro' ? 1.06 : 1.14;
-
-  const lut = new Uint8Array(256);
-  for (let i = 0; i < 256; i++) {
-    const x = i / 255;
-    let curved = Math.pow(x, gamma);
-    curved = curved - (contrastStrength * Math.sin(2 * Math.PI * curved)) / (2 * Math.PI);
-    // Soft highlight roll-off at 0.88 so whites stay warm champagne
-    if (curved > 0.72) {
-      curved = 0.72 + (curved - 0.72) * 0.55;
-    }
-    lut[i] = Math.max(8, Math.min(218, Math.round(curved * 255)));
-  }
-
-  for (let i = 0; i < data.length; i += 4) {
-    let r = lut[data[i]];
-    let g = lut[data[i + 1]];
-    let b = lut[data[i + 2]];
-
-    const luma = 0.299 * r + 0.587 * g + 0.114 * b;
-    r = luma + (r - luma) * saturationBoost;
-    g = luma + (g - luma) * saturationBoost;
-    b = luma + (b - luma) * saturationBoost;
-
-    const midWeight = Math.sin((luma / 255) * Math.PI);
-    if (preset === 'golden-hour') {
-      r += 10 * midWeight;
-      g += 4 * midWeight;
-      b -= 6 * midWeight;
-    } else if (preset === 'leica-chiaroscuro') {
-      r += 6 * midWeight;
-      g += 2 * midWeight;
-      b -= 4 * midWeight;
-    } else {
-      r += 8 * midWeight;
-      g += 3 * midWeight;
-      b -= 5 * midWeight;
-    }
-
-    data[i] = Math.max(0, Math.min(220, Math.round(r)));
-    data[i + 1] = Math.max(0, Math.min(214, Math.round(g)));
-    data[i + 2] = Math.max(0, Math.min(204, Math.round(b)));
-  }
-
-  ctx.putImageData(imgData, 0, 0);
-
-  const cx = width / 2;
-  const cy = height / 2;
-  const maxR = Math.hypot(cx, cy);
-  const vig = ctx.createRadialGradient(cx, cy, maxR * 0.42, cx, cy, maxR);
-  vig.addColorStop(0, 'rgba(0,0,0,0)');
-  vig.addColorStop(1, preset === 'leica-chiaroscuro' ? 'rgba(18,14,11,0.48)' : 'rgba(20,16,13,0.38)');
-  ctx.fillStyle = vig;
-  ctx.fillRect(0, 0, width, height);
-
-  return canvas.toDataURL('image/jpeg', 0.92);
 }
