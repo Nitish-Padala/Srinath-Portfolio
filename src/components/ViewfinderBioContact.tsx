@@ -100,10 +100,10 @@ export const ViewfinderBioContact: React.FC<ViewfinderBioContactProps> = ({
         <span className="inline-block px-3 py-1 rounded-full text-[11px] font-mono tracking-widest uppercase bg-[#C85A43]/15 text-[#C85A43] font-semibold">
           Section 5 · Page 5 Blueprint
         </span>
-        <h2 className="font-serif text-3xl sm:text-5xl font-semibold text-[#F5F0E6]">
+        <h2 className="font-serif text-3xl sm:text-5xl font-semibold text-[#3E2020]">
           Viewfinder Bio &amp; VIP Contact Hub
         </h2>
-        <p className="text-xs sm:text-sm text-[#C8A97E]/80 font-serif italic">
+        <p className="text-xs sm:text-sm text-[#3E2020]/75 font-serif italic">
           Authentic camera interface overlay · Tinder-style polaroids · Direct concierge booking
         </p>
       </div>
@@ -112,7 +112,7 @@ export const ViewfinderBioContact: React.FC<ViewfinderBioContactProps> = ({
         {/* ============================================================== */}
         {/* 1. CAMERA VIEW-FINDER ANIMATION OVERLAY                        */}
         {/* ============================================================== */}
-        <div className="relative rounded-[32px] p-2 sm:p-3 bg-gradient-to-b from-[#3E2020] via-[#241312] to-[#18110E] border border-[#C8A97E]/30 shadow-2xl">
+        <div className="relative rounded-[32px] p-2 sm:p-3 bg-gradient-to-b from-[#3E2020] via-[#241312] to-[#18110E] border border-[#EAE0D5] shadow-2xl">
           <div className="relative h-[560px] sm:h-[620px] rounded-[24px] overflow-hidden bg-black flex flex-col justify-between">
             {/* Camera Viewfinder Screen Content */}
             <div className="absolute inset-0 z-0">

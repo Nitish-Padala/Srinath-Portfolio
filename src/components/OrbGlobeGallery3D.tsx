@@ -397,20 +397,20 @@ export const OrbGlobeGallery3D: React.FC<OrbGlobeGallery3DProps> = ({
         <span className="inline-block px-3 py-1 rounded-full text-[11px] font-mono tracking-widest uppercase bg-[#C85A43]/15 text-[#C85A43] font-semibold mb-2">
           360° Spherical Mosaic
         </span>
-        <h2 className="font-serif text-2xl sm:text-4xl font-semibold text-[#F5F0E6]">
+        <h2 className="font-serif text-2xl sm:text-4xl font-semibold text-[#3E2020]">
           The 3D Photo Globe
         </h2>
-        <p className="text-xs sm:text-sm text-[#C8A97E]/80 font-serif italic mt-1">
+        <p className="text-xs sm:text-sm text-[#3E2020]/75 font-serif italic mt-1">
           Photos mapped as a seamless circular brick-wall sphere · Touch &amp; drag 360° rotation
         </p>
       </div>
 
       {/* 90% Mobile Screen Proportions Container */}
-      <div className="relative w-[90vw] max-w-[540px] aspect-square mx-auto flex items-center justify-center overflow-hidden rounded-full border border-[#C8A97E]/30 shadow-[0_20px_50px_rgba(0,0,0,0.85)] bg-[#18110E]">
+      <div className="relative w-[90vw] max-w-[540px] aspect-square mx-auto flex items-center justify-center overflow-hidden rounded-full border border-[#EAE0D5] shadow-[0_20px_50px_rgba(62,32,32,0.18)] bg-[#3E2020]">
         {/* Subtle celestial guide ring highlighting the interactive circular globe boundary */}
         <div
           aria-hidden="true"
-          className="absolute pointer-events-none inset-4 rounded-full border border-[#C8A97E]/20 shadow-[0_0_80px_rgba(200,169,126,0.06)] opacity-70"
+          className="absolute pointer-events-none inset-4 rounded-full border border-white/20 shadow-[0_0_80px_rgba(200,169,126,0.06)] opacity-70"
         />
 
         {/* Center Optical Reticle */}

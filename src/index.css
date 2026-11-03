@@ -19,8 +19,8 @@
 
   body {
     font-family: var(--font-sans);
-    background-color: #18110E;
-    color: #F5F0E6;
+    background-color: #F5F0E6;
+    color: #3E2020;
     touch-action: manipulation;
   }
 
@@ -58,10 +58,9 @@
   scrollbar-width: none;
 }
 
-/* Camera viewfinder grid */
 .viewfinder-grid {
-  background-image: 
-    linear-gradient(to right, rgba(245, 240, 230, 0.15) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(245, 240, 230, 0.15) 1px, transparent 1px);
   background-size: 33.333% 33.333%;
+  background-image: 
+    linear-gradient(to right, rgba(245, 240, 230, 0.22) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(245, 240, 230, 0.22) 1px, transparent 1px);
 }

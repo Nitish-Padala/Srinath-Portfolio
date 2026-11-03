@@ -19,7 +19,6 @@ import {
   renderPhotoDataUrl,
   warmCacheSilently,
 } from './utils/proceduralPhotos';
-import { SpringBreezeBackground3D } from './components/SpringBreezeBackground3D';
 import { GlobalHeader } from './components/GlobalHeader';
 import { AutoSwipingHero } from './components/AutoSwipingHero';
 import { VintageGalleries } from './components/VintageGalleries';
@@ -159,20 +158,17 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen bg-[#18110E] text-[#F5F0E6] flex flex-col relative font-sans selection:bg-[#C85A43] selection:text-[#F5F0E6]"
+      className="min-h-screen bg-[#F5F0E6] text-[#3E2020] flex flex-col relative font-sans selection:bg-[#C85A43] selection:text-[#F5F0E6]"
       data-state={fullscreenPhoto ? 'fullscreen-photo' : 'vintage-romance'}
       data-last-haptic={lastHapticEvent}
     >
-      {/* 3D Ambient Breeze Canvas */}
-      <SpringBreezeBackground3D />
-
-      {/* 1. COVER & BRANDING HEADER (Blueprint Panel 1) */}
+      {/* 1. COVER & BRANDING HEADER (Blueprint Panel 1 & 2) */}
       <GlobalHeader
         phone={contactConfig.phone}
         whatsapp={contactConfig.whatsapp}
       />
 
-      {/* MAIN REDESIGN BODY */}
+      {/* MAIN REDESIGN BODY IN LUXURY SOFT CREAM PALETTE */}
       <main className="flex-1 relative z-10 space-y-12 sm:space-y-20 pb-16">
         {/* 2. AUTO-SWIPING HERO & GLOBAL HEADER (Blueprint Panel 2) */}
         <AutoSwipingHero
@@ -200,16 +196,16 @@ export default function App() {
         />
       </main>
 
-      {/* FOOTER */}
-      <footer className="relative z-10 border-t border-[#C8A97E]/20 bg-[#120D0A] py-10 px-4 text-center">
+      {/* LUXURY EDITORIAL FOOTER */}
+      <footer className="relative z-10 border-t border-[#EAE0D5] bg-[#EAE0D5]/50 py-10 px-4 text-center">
         <div className="max-w-4xl mx-auto space-y-3">
-          <p className="font-serif text-lg sm:text-xl text-[#F5F0E6] tracking-wide">
+          <p className="font-serif text-lg sm:text-2xl text-[#3E2020] font-semibold tracking-wide">
             Srinath Photography
           </p>
-          <p className="text-xs sm:text-sm text-[#C8A97E]/70 font-serif italic">
-            The Vintage Romance · High-Fidelity Mobile Wedding &amp; Visual Storytelling
+          <p className="text-xs sm:text-sm text-[#C85A43] font-serif italic">
+            The Vintage Romance · Mobile-First Wedding &amp; Visual Storytelling
           </p>
-          <div className="text-[11px] font-mono text-[#EAE0D5]/40 pt-4">
+          <div className="text-[11px] font-mono text-[#3E2020]/50 pt-2">
             &copy; {new Date().getFullYear()} Srinath. All rights reserved. 150 Retained Photographic Frames.
           </div>
         </div>
@@ -224,7 +220,7 @@ export default function App() {
           data-testid="fullscreen-photo-overlay"
           data-swipe-threshold={swipeVisual.thresholdReached ? 'reached' : 'idle'}
           style={{
-            backgroundColor: `rgba(24, 17, 14, ${swipeVisual.backdropOpacity})`,
+            backgroundColor: `rgba(62, 32, 32, ${swipeVisual.backdropOpacity * 0.95})`,
             touchAction: 'none',
           }}
           onPointerDown={(e) => beginFullscreenGesture(e.clientX, e.clientY)}
@@ -262,13 +258,13 @@ export default function App() {
           <div className="max-w-4xl w-full mx-auto flex flex-col items-center gap-1.5 pointer-events-none">
             <div
               className={`w-12 h-1.5 rounded-full transition-colors ${
-                swipeVisual.thresholdReached ? 'bg-[#C85A43]' : 'bg-[#C8A97E]/40'
+                swipeVisual.thresholdReached ? 'bg-[#C85A43]' : 'bg-[#EAE0D5]/50'
               }`}
             />
             <div className="text-xs sm:text-sm font-serif text-[#F5F0E6] flex items-center gap-2">
               <span className="font-semibold">{fullscreenPhoto.title}</span>
-              <span className="text-[#C8A97E]/60">·</span>
-              <span className="text-[11px] font-mono text-[#C85A43] uppercase tracking-wider">
+              <span className="text-[#EAE0D5]/60">·</span>
+              <span className="text-[11px] font-mono text-[#C85A43] uppercase tracking-wider font-bold">
                 {fullscreenPhoto.aspectRatio}
               </span>
             </div>
@@ -284,7 +280,7 @@ export default function App() {
                 ? 'none'
                 : 'transform 180ms cubic-bezier(0.16, 1, 0.3, 1), opacity 160ms ease-out',
             }}
-            className="my-auto max-w-5xl w-full mx-auto overflow-hidden rounded-2xl border border-[#C8A97E]/30 shadow-2xl bg-[#120D0A] pointer-events-none flex items-center justify-center p-2 sm:p-4"
+            className="my-auto max-w-5xl w-full mx-auto overflow-hidden rounded-2xl border border-[#EAE0D5]/30 shadow-2xl bg-[#18110E] pointer-events-none flex items-center justify-center p-2 sm:p-4"
           >
             <img
               src={renderPhotoDataUrl(fullscreenPhoto, 1280, 860)}
@@ -299,7 +295,7 @@ export default function App() {
 
           {/* Bottom Bar: Quick Hint */}
           <div className="text-center pointer-events-none">
-            <span className="text-[10px] font-mono tracking-widest uppercase text-[#C8A97E]/60">
+            <span className="text-[10px] font-mono tracking-widest uppercase text-[#EAE0D5]/70">
               Tap anywhere or swipe up/down to return
             </span>
           </div>

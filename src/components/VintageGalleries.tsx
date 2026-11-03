@@ -62,18 +62,21 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
   };
 
   return (
-    <div className="space-y-16 sm:space-y-24 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div className="space-y-16 sm:space-y-24 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
       {/* ============================================================== */}
-      {/* 1. 16:9 CINEMATIC HORIZONTAL SWIPE CAROUSEL                    */}
+      {/* 1. 16:9 CINEMATIC HORIZONTAL SWIPE CAROUSEL (Panel 3)          */}
       {/* ============================================================== */}
-      <section id="gallery-16-9" aria-label="16:9 Cinematic Carousel" className="space-y-6">
+      <section id="gallery-16-9" aria-label="16:9 Cinematic Carousel" className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#F5F0E6]">
-              Cinematic Horizon Carousel
+            <span className="inline-block px-3 py-1 rounded-full text-[11px] font-mono tracking-widest uppercase bg-[#C85A43]/15 text-[#C85A43] font-semibold mb-1">
+              16:9 Cinematic Horizon
+            </span>
+            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#3E2020]">
+              Horizontal Swipe Carousel
             </h2>
-            <p className="text-xs text-[#C8A97E]/80 font-serif italic mt-0.5">
-              16:9 panoramic widescreen wedding &amp; landscape narratives
+            <p className="text-xs text-[#3E2020]/70 font-serif italic mt-0.5">
+              Panoramic widescreen wedding &amp; sacred ritual narratives
             </p>
           </div>
 
@@ -82,7 +85,7 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
               type="button"
               onClick={handle16x9Prev}
               aria-label="Previous 16:9 frame"
-              className="w-10 h-10 rounded-full border border-[#C8A97E]/40 bg-[#3E2020]/40 text-[#F5F0E6] hover:bg-[#C85A43] hover:border-[#C85A43] flex items-center justify-center transition-colors cursor-pointer"
+              className="w-10 h-10 rounded-full border border-[#EAE0D5] bg-[#EAE0D5] text-[#3E2020] hover:bg-[#C85A43] hover:text-[#F5F0E6] flex items-center justify-center transition-all cursor-pointer shadow-sm"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -90,7 +93,7 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
               type="button"
               onClick={handle16x9Next}
               aria-label="Next 16:9 frame"
-              className="w-10 h-10 rounded-full border border-[#C8A97E]/40 bg-[#3E2020]/40 text-[#F5F0E6] hover:bg-[#C85A43] hover:border-[#C85A43] flex items-center justify-center transition-colors cursor-pointer"
+              className="w-10 h-10 rounded-full border border-[#EAE0D5] bg-[#EAE0D5] text-[#3E2020] hover:bg-[#C85A43] hover:text-[#F5F0E6] flex items-center justify-center transition-all cursor-pointer shadow-sm"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -109,7 +112,7 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
               }
             }}
             aria-label={`Open ${current16x9.title} in full screen`}
-            className="group relative w-full aspect-[16/9] rounded-2xl sm:rounded-3xl overflow-hidden border border-[#C8A97E]/30 bg-[#18110E] shadow-2xl cursor-pointer focus:outline-none"
+            className="group relative w-full aspect-[16/9] rounded-2xl sm:rounded-3xl overflow-hidden border border-[#EAE0D5] bg-[#3E2020] shadow-xl cursor-pointer focus:outline-none"
           >
             <img
               src={renderPhotoDataUrl(current16x9, 1400, 780)}
@@ -119,13 +122,13 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
               }}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#18110E]/85 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent pointer-events-none" />
 
             <div className="absolute bottom-4 sm:bottom-6 left-5 sm:left-8 right-5 sm:right-8 flex items-baseline justify-between">
-              <span className="font-serif text-lg sm:text-2xl font-medium text-[#F5F0E6] truncate group-hover:text-[#C85A43] transition-colors">
+              <span className="font-serif text-lg sm:text-2xl font-medium text-[#F5F0E6] truncate group-hover:text-[#EAE0D5] transition-colors">
                 {current16x9.title}
               </span>
-              <span className="hidden sm:inline-flex items-center gap-1 text-xs font-mono text-[#C8A97E]/80">
+              <span className="hidden sm:inline-flex items-center gap-1 text-xs font-mono text-[#EAE0D5]">
                 <span>View Full Frame</span>
                 <Maximize2 className="w-3.5 h-3.5 ml-1" />
               </span>
@@ -135,15 +138,18 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
       </section>
 
       {/* ============================================================== */}
-      {/* 2. 1:1 SEAMLESS SQUARE MOSAIC                                  */}
+      {/* 2. 1:1 SEAMLESS SQUARE MOSAIC (Panel 3)                        */}
       {/* ============================================================== */}
-      <section id="gallery-1-1" aria-label="1:1 Square Mosaic" className="space-y-6">
+      <section id="gallery-1-1" aria-label="1:1 Square Mosaic" className="space-y-4">
         <div>
-          <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#F5F0E6]">
+          <span className="inline-block px-3 py-1 rounded-full text-[11px] font-mono tracking-widest uppercase bg-[#C85A43]/15 text-[#C85A43] font-semibold mb-1">
+            1:1 Seamless Square Mosaic
+          </span>
+          <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#3E2020]">
             Fine Art &amp; Symmetrical Studios
           </h2>
-          <p className="text-xs text-[#C8A97E]/80 font-serif italic mt-0.5">
-            1:1 seamless square mosaic of sacred rituals and floral geometry
+          <p className="text-xs text-[#3E2020]/70 font-serif italic mt-0.5">
+            Zero-gap hairline mosaic of sacred rituals and floral geometry
           </p>
         </div>
 
@@ -154,7 +160,7 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
               type="button"
               onClick={() => onOpenFullscreen(photo)}
               aria-label={`Open ${photo.title} in full screen`}
-              className="group relative aspect-square rounded-xl overflow-hidden border border-[#C8A97E]/30 bg-[#18110E] shadow-md hover:border-[#C85A43] transition-all cursor-pointer text-left focus:outline-none"
+              className="group relative aspect-square rounded-xl overflow-hidden border border-[#EAE0D5] bg-[#3E2020] shadow-md hover:border-[#C85A43] transition-all cursor-pointer text-left focus:outline-none"
             >
               <img
                 src={renderPhotoDataUrl(photo, 700, 700)}
@@ -165,9 +171,9 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
                 }}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#18110E]/80 via-transparent to-transparent opacity-80" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80" />
               <div className="absolute bottom-2.5 left-3 right-3">
-                <span className="font-serif text-xs sm:text-sm font-medium text-[#F5F0E6] truncate block group-hover:text-[#C85A43] transition-colors">
+                <span className="font-serif text-xs sm:text-sm font-medium text-[#F5F0E6] truncate block group-hover:text-[#EAE0D5] transition-colors">
                   {photo.title}
                 </span>
               </div>
@@ -177,15 +183,18 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
       </section>
 
       {/* ============================================================== */}
-      {/* 3. 3:4 & 4:3 STAGGERED MASONRY LAYOUT                          */}
+      {/* 3. 3:4 & 4:3 STAGGERED MASONRY LAYOUT (Panel 3)                */}
       {/* ============================================================== */}
-      <section id="gallery-masonry" aria-label="Staggered Masonry" className="space-y-6">
+      <section id="gallery-masonry" aria-label="Staggered Masonry" className="space-y-4">
         <div>
-          <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#F5F0E6]">
+          <span className="inline-block px-3 py-1 rounded-full text-[11px] font-mono tracking-widest uppercase bg-[#C85A43]/15 text-[#C85A43] font-semibold mb-1">
+            3:4 &amp; 4:3 Staggered Layout
+          </span>
+          <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#3E2020]">
             Bridal Portraits &amp; Documentary Frames
           </h2>
-          <p className="text-xs text-[#C8A97E]/80 font-serif italic mt-0.5">
-            3:4 vertical portraits and 4:3 classic documentary frames in editorial masonry
+          <p className="text-xs text-[#3E2020]/70 font-serif italic mt-0.5">
+            Asymmetric editorial pairing of vertical portraits and horizontal ritual vistas
           </p>
         </div>
 
@@ -195,7 +204,7 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
             <button
               type="button"
               onClick={() => onOpenFullscreen(photos3x4[0])}
-              className="group relative w-full aspect-[3/4] rounded-2xl overflow-hidden border border-[#C8A97E]/30 bg-[#18110E] shadow-lg hover:border-[#C85A43] transition-all cursor-pointer text-left focus:outline-none"
+              className="group relative w-full aspect-[3/4] rounded-2xl overflow-hidden border border-[#EAE0D5] bg-[#3E2020] shadow-lg hover:border-[#C85A43] transition-all cursor-pointer text-left focus:outline-none"
             >
               <img
                 src={renderPhotoDataUrl(photos3x4[0], 800, 1060)}
@@ -203,7 +212,7 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
                 loading="lazy"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#18110E]/85 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
               <div className="absolute bottom-3 left-4 right-4">
                 <span className="font-serif text-sm font-medium text-[#F5F0E6] truncate block">
                   {photos3x4[0].title}
@@ -219,7 +228,7 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
                 key={photo.id}
                 type="button"
                 onClick={() => onOpenFullscreen(photo)}
-                className="group relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-[#C8A97E]/30 bg-[#18110E] shadow-lg hover:border-[#C85A43] transition-all cursor-pointer text-left focus:outline-none block"
+                className="group relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-[#EAE0D5] bg-[#3E2020] shadow-lg hover:border-[#C85A43] transition-all cursor-pointer text-left focus:outline-none block"
               >
                 <img
                   src={renderPhotoDataUrl(photo, 800, 600)}
@@ -227,7 +236,7 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
                   loading="lazy"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#18110E]/85 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
                 <div className="absolute bottom-3 left-4 right-4">
                   <span className="font-serif text-sm font-medium text-[#F5F0E6] truncate block">
                     {photo.title}
@@ -242,7 +251,7 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
             <button
               type="button"
               onClick={() => onOpenFullscreen(photos3x4[1])}
-              className="group relative w-full aspect-[3/4] rounded-2xl overflow-hidden border border-[#C8A97E]/30 bg-[#18110E] shadow-lg hover:border-[#C85A43] transition-all cursor-pointer text-left focus:outline-none hidden lg:block"
+              className="group relative w-full aspect-[3/4] rounded-2xl overflow-hidden border border-[#EAE0D5] bg-[#3E2020] shadow-lg hover:border-[#C85A43] transition-all cursor-pointer text-left focus:outline-none hidden lg:block"
             >
               <img
                 src={renderPhotoDataUrl(photos3x4[1], 800, 1060)}
@@ -250,7 +259,7 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
                 loading="lazy"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#18110E]/85 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent" />
               <div className="absolute bottom-3 left-4 right-4">
                 <span className="font-serif text-sm font-medium text-[#F5F0E6] truncate block">
                   {photos3x4[1].title}
@@ -262,12 +271,12 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
       </section>
 
       {/* ============================================================== */}
-      {/* 4. 9:16 'APPLE RECENT APPS'-INSPIRED 3D COVERFLOW SWIPER       */}
+      {/* 4. 9:16 'APPLE RECENT APPS'-INSPIRED 3D COVERFLOW (Panel 3)    */}
       {/* ============================================================== */}
       <section
         id="gallery-9-16"
         aria-label="9:16 Apple Recent Apps Carousel"
-        className="rounded-[32px] p-6 sm:p-10 bg-[#EAE0D5] text-[#3E2020] shadow-2xl border border-[#C8A97E]/40 space-y-6"
+        className="rounded-[32px] p-6 sm:p-10 bg-[#EAE0D5] text-[#3E2020] shadow-xl border border-[#C8A97E]/30 space-y-6"
       >
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
@@ -287,7 +296,7 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
               type="button"
               onClick={handleCoverflowPrev}
               aria-label="Previous story in 3D coverflow"
-              className="w-10 h-10 rounded-full border border-[#3E2020]/30 bg-white/70 text-[#3E2020] hover:bg-[#C85A43] hover:text-white hover:border-[#C85A43] flex items-center justify-center transition-all cursor-pointer shadow-sm"
+              className="w-10 h-10 rounded-full border border-[#3E2020]/20 bg-white/80 text-[#3E2020] hover:bg-[#C85A43] hover:text-white hover:border-[#C85A43] flex items-center justify-center transition-all cursor-pointer shadow-sm"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -295,7 +304,7 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
               type="button"
               onClick={handleCoverflowNext}
               aria-label="Next story in 3D coverflow"
-              className="w-10 h-10 rounded-full border border-[#3E2020]/30 bg-white/70 text-[#3E2020] hover:bg-[#C85A43] hover:text-white hover:border-[#C85A43] flex items-center justify-center transition-all cursor-pointer shadow-sm"
+              className="w-10 h-10 rounded-full border border-[#3E2020]/20 bg-white/80 text-[#3E2020] hover:bg-[#C85A43] hover:text-white hover:border-[#C85A43] flex items-center justify-center transition-all cursor-pointer shadow-sm"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -308,14 +317,13 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
           onTouchStart={handleCoverflowTouchStart}
           onTouchEnd={handleCoverflowTouchEnd}
         >
-          {/* Render 5 cascading cards in 3D depth */}
+          {/* Render cascading cards in 3D depth */}
           {[-2, -1, 0, 1, 2].map((offset) => {
             const cardIdx = (coverflowIndex + offset + total9x16) % total9x16;
             const photo = photos9x16[cardIdx];
             if (!photo) return null;
 
             const isCenter = offset === 0;
-            // Precise 3D Coverflow positioning
             const translateX = offset * 110;
             const translateZ = -Math.abs(offset) * 80;
             const rotateY = offset * -22;
@@ -332,10 +340,10 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
                   zIndex,
                   transition: 'transform 420ms cubic-bezier(0.16, 1, 0.3, 1), opacity 420ms ease-out',
                 }}
-                className={`absolute w-[220px] sm:w-[260px] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl bg-[#18110E] border-2 cursor-pointer transition-shadow ${
+                className={`absolute w-[220px] sm:w-[260px] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl bg-[#3E2020] border-2 cursor-pointer transition-shadow ${
                   isCenter
-                    ? 'border-[#C85A43] shadow-[0_20px_40px_rgba(62,32,32,0.35)]'
-                    : 'border-white/50 opacity-80'
+                    ? 'border-[#C85A43] shadow-[0_20px_40px_rgba(62,32,32,0.30)]'
+                    : 'border-white/60 opacity-80'
                 }`}
                 onClick={() => {
                   if (isCenter) {
@@ -351,14 +359,14 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
                   loading={isCenter ? 'eager' : 'lazy'}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#18110E]/90 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent pointer-events-none" />
 
                 <div className="absolute bottom-3 left-3 right-3 text-left">
                   <span className="font-serif text-sm font-medium text-[#F5F0E6] truncate block">
                     {photo.title}
                   </span>
                   {isCenter && (
-                    <span className="text-[10px] font-mono text-[#C8A97E] uppercase tracking-wider block mt-0.5">
+                    <span className="text-[10px] font-mono text-[#EAE0D5] uppercase tracking-wider block mt-0.5">
                       Tap to Expand
                     </span>
                   )}
