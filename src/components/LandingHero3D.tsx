@@ -390,7 +390,7 @@ export const LandingHero3D: React.FC<LandingHero3DProps> = ({
 
       // Apply camera angle preset if user hasn't overridden with manual drag
       if (!userInteracting) {
-        const mult = (container.clientWidth || window.innerWidth) < 600 ? 1.32 : 1.0;
+        const mult = ((container ? container.clientWidth : 0) || window.innerWidth) < 600 ? 1.32 : 1.0;
         if (st.anglePreset === 'signature') {
           targetCamPos.set(3.2 * mult, 2.0 * mult, 5.4 * mult);
         } else if (st.anglePreset === 'lens-macro') {

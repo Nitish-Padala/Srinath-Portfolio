@@ -158,11 +158,11 @@ export const OrbGlobeGallery3D: React.FC<OrbGlobeGallery3DProps> = ({
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = !isSoftwareGl;
     controls.dampingFactor = 0.06;
-    controls.rotateSpeed = 0.72;
-    controls.enableZoom = true;
-    controls.minDistance = 7.0;
-    controls.maxDistance = 24.0;
+    controls.rotateSpeed = 0.85;
+    // Strictly No-Zoom / No-Pan per Page 4 Design Blueprint
+    controls.enableZoom = false;
     controls.enablePan = false;
+    controls.enableRotate = true;
 
     // Center photo raycaster
     const centerRaycaster = new THREE.Raycaster();
@@ -336,19 +336,12 @@ export const OrbGlobeGallery3D: React.FC<OrbGlobeGallery3DProps> = ({
       controls.enabled = true;
     };
 
-    // Wheel event: zoom globe if cursor is inside the circle; scroll page if outside
-    const onWheel = (e: WheelEvent) => {
-      const inside = isInsideGlobeCircle(e.clientX, e.clientY);
-      controls.enableZoom = inside;
-    };
-
     const domElem = renderer.domElement;
     domElem.addEventListener('pointerdown', onPointerDown, { capture: true });
     domElem.addEventListener('pointerup', onPointerUp);
     domElem.addEventListener('touchstart', onTouchStart, { passive: true });
     domElem.addEventListener('touchmove', onTouchMove, { passive: true });
     domElem.addEventListener('touchend', onTouchEnd, { passive: true });
-    domElem.addEventListener('wheel', onWheel, { passive: true, capture: true });
 
     const handleResize = () => {
       if (!container) return;
@@ -376,7 +369,6 @@ export const OrbGlobeGallery3D: React.FC<OrbGlobeGallery3DProps> = ({
       domElem.removeEventListener('touchstart', onTouchStart);
       domElem.removeEventListener('touchmove', onTouchMove);
       domElem.removeEventListener('touchend', onTouchEnd);
-      domElem.removeEventListener('wheel', onWheel, { capture: true });
       cancelAnimationFrame(frameId);
       clearTimeout(frameId);
       controls.dispose();
@@ -398,46 +390,59 @@ export const OrbGlobeGallery3D: React.FC<OrbGlobeGallery3DProps> = ({
     <section
       id="orb-section"
       aria-label="3D Photo Globe"
-      className="relative z-10 py-6 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"
+      className="relative z-10 py-12 sm:py-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8"
     >
-      <div className="relative w-full h-[640px] sm:h-[740px] lg:h-[820px] flex items-center justify-center overflow-hidden">
+      {/* Section Header */}
+      <div className="text-center max-w-xl mx-auto">
+        <span className="inline-block px-3 py-1 rounded-full text-[11px] font-mono tracking-widest uppercase bg-[#C85A43]/15 text-[#C85A43] font-semibold mb-2">
+          360° Spherical Mosaic
+        </span>
+        <h2 className="font-serif text-2xl sm:text-4xl font-semibold text-[#F5F0E6]">
+          The 3D Photo Globe
+        </h2>
+        <p className="text-xs sm:text-sm text-[#C8A97E]/80 font-serif italic mt-1">
+          Photos mapped as a seamless circular brick-wall sphere · Touch &amp; drag 360° rotation
+        </p>
+      </div>
+
+      {/* 90% Mobile Screen Proportions Container */}
+      <div className="relative w-[90vw] max-w-[540px] aspect-square mx-auto flex items-center justify-center overflow-hidden rounded-full border border-[#C8A97E]/30 shadow-[0_20px_50px_rgba(0,0,0,0.85)] bg-[#18110E]">
         {/* Subtle celestial guide ring highlighting the interactive circular globe boundary */}
         <div
           aria-hidden="true"
-          className="absolute pointer-events-none w-[520px] h-[520px] sm:w-[630px] sm:h-[630px] lg:w-[710px] lg:h-[710px] rounded-full border border-[#c8a97e]/15 shadow-[0_0_100px_rgba(200,169,126,0.06)] opacity-70"
+          className="absolute pointer-events-none inset-4 rounded-full border border-[#C8A97E]/20 shadow-[0_0_80px_rgba(200,169,126,0.06)] opacity-70"
         />
 
         {/* Center Optical Reticle */}
         <div
           aria-hidden="true"
-          className="absolute pointer-events-none w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#d48c29]/50 flex items-center justify-center z-15 shadow-[0_0_20px_rgba(212,140,41,0.25)]"
+          className="absolute pointer-events-none w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#D48C29]/60 flex items-center justify-center z-15 shadow-[0_0_20px_rgba(212,140,41,0.25)]"
         >
-          <div className="w-1.5 h-1.5 rounded-full bg-[#d48c29]/70" />
+          <div className="w-1.5 h-1.5 rounded-full bg-[#D48C29]" />
         </div>
 
         {/* 3D WebGL Canvas */}
         <div
           ref={canvasMountRef}
           data-testid="orb-globe-canvas"
-          data-default-zoom="80%"
           className="w-full h-full cursor-grab active:cursor-grabbing"
         />
 
         {/* Floating Center Photo Capsule Button: Updates as the Globe Spins */}
         {centerPhoto && (
-          <div className="absolute bottom-6 sm:bottom-8 inset-x-0 flex justify-center z-20 pointer-events-auto px-4">
+          <div className="absolute bottom-5 inset-x-0 flex justify-center z-20 pointer-events-auto px-4">
             <button
               type="button"
               onClick={() => callbacksRef.current.onSelectPhotoFullscreen(centerPhoto)}
               aria-label={`Open ${centerPhoto.title} in full screen`}
-              className="px-5 py-2.5 rounded-full bg-[#14110f]/90 border border-[#d48c29]/70 backdrop-blur-md text-[#ebe0cc] shadow-2xl flex items-center gap-2.5 hover:bg-[#d48c29] hover:text-[#14110f] transition-all cursor-pointer group"
+              className="px-4 py-2 rounded-full bg-[#18110E]/90 border border-[#D48C29]/80 backdrop-blur-md text-[#F5F0E6] shadow-2xl flex items-center gap-2 hover:bg-[#C85A43] hover:border-[#C85A43] transition-all cursor-pointer group"
             >
-              <span className="w-2 h-2 rounded-full bg-[#f59e0b] animate-ping" />
-              <span className="font-serif font-medium text-xs sm:text-sm tracking-wide group-hover:text-[#14110f] transition-colors truncate max-w-[220px] sm:max-w-md">
+              <span className="w-2 h-2 rounded-full bg-[#D48C29] animate-ping" />
+              <span className="font-serif font-medium text-xs sm:text-sm tracking-wide transition-colors truncate max-w-[200px] sm:max-w-xs">
                 {centerPhoto.title}
               </span>
-              <span className="text-[11px] font-sans text-[#c8a97e] group-hover:text-[#14110f] transition-colors border-l border-[#c8a97e]/40 pl-2">
-                Click to View
+              <span className="text-[10px] font-mono text-[#C8A97E] group-hover:text-white transition-colors border-l border-[#C8A97E]/40 pl-2 uppercase">
+                Tap
               </span>
             </button>
           </div>

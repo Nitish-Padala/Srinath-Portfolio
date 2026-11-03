@@ -20,9 +20,11 @@ import {
   warmCacheSilently,
 } from './utils/proceduralPhotos';
 import { SpringBreezeBackground3D } from './components/SpringBreezeBackground3D';
-import { RecentTabsGallery } from './components/RecentTabsGallery';
+import { GlobalHeader } from './components/GlobalHeader';
+import { AutoSwipingHero } from './components/AutoSwipingHero';
+import { VintageGalleries } from './components/VintageGalleries';
 import { OrbGlobeGallery3D } from './components/OrbGlobeGallery3D';
-import { BookingFooter } from './components/BookingFooter';
+import { ViewfinderBioContact } from './components/ViewfinderBioContact';
 
 export default function App() {
   const [allPhotos] = useState<PortfolioPhoto[]>(() => generateInitial150Photos());
@@ -42,7 +44,7 @@ export default function App() {
   });
 
   // Contact Config persisted in localStorage
-  const [contactConfig, setContactConfig] = useState<BookingContactConfig>(() => {
+  const [contactConfig] = useState<BookingContactConfig>(() => {
     if (typeof window !== 'undefined') {
       try {
         const raw = window.localStorage.getItem('srinath_contact_config');
@@ -151,67 +153,69 @@ export default function App() {
     }
   };
 
-  const handleUpdateContactConfig = (newCfg: BookingContactConfig) => {
-    setContactConfig(newCfg);
-    try {
-      window.localStorage.setItem('srinath_contact_config', JSON.stringify(newCfg));
-    } catch {
-      // Ignore storage error
-    }
-  };
-
   const swipeVisual = computeSwipeVisualTransform(
     dismissDirection === 'up' ? -420 : dismissDirection === 'down' ? 420 : swipeDeltaY
   );
 
   return (
     <div
-      className="min-h-screen bg-[#14110f] text-[#ebe0cc] flex flex-col relative"
-      data-state={fullscreenPhoto ? 'fullscreen-photo' : 'recent-tabs'}
+      className="min-h-screen bg-[#18110E] text-[#F5F0E6] flex flex-col relative font-sans selection:bg-[#C85A43] selection:text-[#F5F0E6]"
+      data-state={fullscreenPhoto ? 'fullscreen-photo' : 'vintage-romance'}
       data-last-haptic={lastHapticEvent}
     >
-      {/* Option 5 Dark Charcoal, Saffron Gold & Mandala Ember 3D Atmosphere */}
+      {/* 3D Ambient Breeze Canvas */}
       <SpringBreezeBackground3D />
 
-      {/* Top Sticky Header: ONLY "Srinath" and "Inquire & Book" in Option 5 Palette */}
-      <header className="sticky top-0 z-30 h-16 px-4 sm:px-6 lg:px-8 bg-[#14110f]/95 border-b border-[#c8a97e]/30 backdrop-blur-md flex items-center justify-between">
-        <a
-          href="#"
-          className="font-serif text-2xl sm:text-3xl font-semibold tracking-wide text-[#ebe0cc] hover:text-[#d48c29] transition-colors whitespace-nowrap shrink-0"
-        >
-          Srinath
-        </a>
+      {/* 1. COVER & BRANDING HEADER (Blueprint Panel 1) */}
+      <GlobalHeader
+        phone={contactConfig.phone}
+        whatsapp={contactConfig.whatsapp}
+      />
 
-        <a
-          href="#booking-contact"
-          className="min-h-[38px] px-5 py-1.5 text-xs font-medium tracking-wider text-[#ebe0cc] bg-[#1c1613] border border-[#c8a97e]/65 rounded-full hover:bg-[#d48c29] hover:text-[#14110f] hover:border-[#d48c29] transition-all flex items-center whitespace-nowrap shrink-0 shadow-sm"
-        >
-          Inquire &amp; Book
-        </a>
-      </header>
+      {/* MAIN REDESIGN BODY */}
+      <main className="flex-1 relative z-10 space-y-12 sm:space-y-20 pb-16">
+        {/* 2. AUTO-SWIPING HERO & GLOBAL HEADER (Blueprint Panel 2) */}
+        <AutoSwipingHero
+          photos={allPhotos}
+          onOpenFullscreen={(photo) => setFullscreenPhoto(photo)}
+        />
 
-      {/* Main Content */}
-      <main className="flex-1 relative z-10">
-        {/* 1. Option 5 Storyteller's Cinematic Grid + 4 Mood Story Rows (108 Images Total) */}
-        <RecentTabsGallery
+        {/* 3. RATIO-SPECIFIC GALLERIES & APPLE RECENT APPS 'SWIPER' (Blueprint Panel 3) */}
+        <VintageGalleries
           allPhotos={allPhotos}
           onOpenFullscreen={(photo) => setFullscreenPhoto(photo)}
         />
 
-        {/* 2. 108-Photo Tightly Packed Low-Key 3D Photo Globe */}
+        {/* 4. THE 3D PHOTO GLOBE (Blueprint Panel 4 - Strict 360° No-Zoom / No-Pan) */}
         <OrbGlobeGallery3D
           photos={allPhotos}
           onSelectPhotoFullscreen={(photo) => setFullscreenPhoto(photo)}
         />
+
+        {/* 5. VIEWFINDER BIO & VIP CONTACT HUB (Blueprint Panel 5) */}
+        <ViewfinderBioContact
+          photos={allPhotos}
+          contactConfig={contactConfig}
+          onOpenFullscreen={(photo) => setFullscreenPhoto(photo)}
+        />
       </main>
 
-      {/* 3. Direct Booking & Commission Concierge Section */}
-      <BookingFooter
-        contactConfig={contactConfig}
-        onUpdateContactConfig={handleUpdateContactConfig}
-      />
+      {/* FOOTER */}
+      <footer className="relative z-10 border-t border-[#C8A97E]/20 bg-[#120D0A] py-10 px-4 text-center">
+        <div className="max-w-4xl mx-auto space-y-3">
+          <p className="font-serif text-lg sm:text-xl text-[#F5F0E6] tracking-wide">
+            Srinath Photography
+          </p>
+          <p className="text-xs sm:text-sm text-[#C8A97E]/70 font-serif italic">
+            The Vintage Romance · High-Fidelity Mobile Wedding &amp; Visual Storytelling
+          </p>
+          <div className="text-[11px] font-mono text-[#EAE0D5]/40 pt-4">
+            &copy; {new Date().getFullYear()} Srinath. All rights reserved. 150 Retained Photographic Frames.
+          </div>
+        </div>
+      </footer>
 
-      {/* FULL-SCREEN PHOTO VIEWER OVERLAY (Click Anywhere or Swipe Up/Down to Close) */}
+      {/* FULL-SCREEN ORIGINAL UNTRUNCATED PHOTO VIEWER MODAL */}
       {fullscreenPhoto && (
         <div
           role="dialog"
@@ -220,7 +224,7 @@ export default function App() {
           data-testid="fullscreen-photo-overlay"
           data-swipe-threshold={swipeVisual.thresholdReached ? 'reached' : 'idle'}
           style={{
-            backgroundColor: `rgba(16, 13, 11, ${swipeVisual.backdropOpacity})`,
+            backgroundColor: `rgba(24, 17, 14, ${swipeVisual.backdropOpacity})`,
             touchAction: 'none',
           }}
           onPointerDown={(e) => beginFullscreenGesture(e.clientX, e.clientY)}
@@ -254,19 +258,23 @@ export default function App() {
           }}
           className="fixed inset-0 z-50 flex flex-col justify-between p-4 sm:p-8 cursor-pointer select-none overflow-hidden"
         >
-          {/* Top Bar: Photo Name Only */}
+          {/* Top Bar: Slide Dismiss Pill & Frame Info */}
           <div className="max-w-4xl w-full mx-auto flex flex-col items-center gap-1.5 pointer-events-none">
             <div
               className={`w-12 h-1.5 rounded-full transition-colors ${
-                swipeVisual.thresholdReached ? 'bg-[#f59e0b]' : 'bg-[#c8a97e]/40'
+                swipeVisual.thresholdReached ? 'bg-[#C85A43]' : 'bg-[#C8A97E]/40'
               }`}
             />
-            <div className="text-xs sm:text-sm font-serif text-[#ebe0cc]/90">
-              <span>{fullscreenPhoto.title}</span>
+            <div className="text-xs sm:text-sm font-serif text-[#F5F0E6] flex items-center gap-2">
+              <span className="font-semibold">{fullscreenPhoto.title}</span>
+              <span className="text-[#C8A97E]/60">·</span>
+              <span className="text-[11px] font-mono text-[#C85A43] uppercase tracking-wider">
+                {fullscreenPhoto.aspectRatio}
+              </span>
             </div>
           </div>
 
-          {/* Center Full-Resolution Uncropped Photograph in Exact Original Size */}
+          {/* Center Full-Resolution Uncropped Photograph in Exact Original Aspect Ratio */}
           <div
             data-testid="fullscreen-photo-card"
             style={{
@@ -276,7 +284,7 @@ export default function App() {
                 ? 'none'
                 : 'transform 180ms cubic-bezier(0.16, 1, 0.3, 1), opacity 160ms ease-out',
             }}
-            className="my-auto max-w-5xl w-full mx-auto overflow-hidden rounded-2xl border border-[#c8a97e]/45 shadow-2xl bg-[#120e0c] pointer-events-none flex items-center justify-center p-2 sm:p-4"
+            className="my-auto max-w-5xl w-full mx-auto overflow-hidden rounded-2xl border border-[#C8A97E]/30 shadow-2xl bg-[#120D0A] pointer-events-none flex items-center justify-center p-2 sm:p-4"
           >
             <img
               src={renderPhotoDataUrl(fullscreenPhoto, 1280, 860)}
@@ -285,11 +293,16 @@ export default function App() {
               style={{
                 filter: fullscreenPhoto.filterStyle,
               }}
-              className="w-auto h-auto max-h-[82vh] max-w-full object-contain mx-auto rounded-lg"
+              className="w-auto h-auto max-h-[82vh] max-w-full object-contain mx-auto rounded-lg shadow-lg"
             />
           </div>
 
-          <div className="h-4 pointer-events-none" />
+          {/* Bottom Bar: Quick Hint */}
+          <div className="text-center pointer-events-none">
+            <span className="text-[10px] font-mono tracking-widest uppercase text-[#C8A97E]/60">
+              Tap anywhere or swipe up/down to return
+            </span>
+          </div>
         </div>
       )}
     </div>

@@ -7,24 +7,24 @@
     --font-serif: 'Playfair Display', Georgia, serif;
     --font-mono: 'JetBrains Mono', monospace;
 
-    /* Option 5: The Storyteller's Cinematic Grid Palette */
-    --color-charcoal: #14110f;
-    --color-espresso: #1c1613;
-    --color-crimson: #7c1d1d;
-    --color-saffron: #d48c29;
-    --color-marigold: #f59e0b;
-    --color-champagne: #ebe0cc;
-    --color-gold-border: #c8a97e;
+    /* The Vintage Romance Luxury Palette */
+    --color-soft-cream: #F5F0E6;
+    --color-warm-beige: #EAE0D5;
+    --color-muted-rust: #C85A43;
+    --color-dark-espresso: #3E2020;
+    --color-charcoal-depth: #18110E;
+    --color-gold-accent: #D48C29;
+    --color-gold-border: #C8A97E;
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #14110f;
-    color: #ebe0cc;
+    background-color: #18110E;
+    color: #F5F0E6;
     touch-action: manipulation;
   }
 
-  h1, h2, h3, .font-editorial {
+  h1, h2, h3, h4, .font-editorial {
     font-family: var(--font-serif);
   }
 
@@ -38,8 +38,16 @@
   perspective: 1200px;
 }
 
+.perspective-1400 {
+  perspective: 1400px;
+}
+
 .preserve-3d {
   transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -50,9 +58,10 @@
   scrollbar-width: none;
 }
 
-/* Filmstrip perforations pattern */
-.filmstrip-holes {
-  background-image: radial-gradient(circle, #14110f 38%, transparent 42%);
-  background-size: 22px 12px;
-  background-repeat: repeat-x;
+/* Camera viewfinder grid */
+.viewfinder-grid {
+  background-image: 
+    linear-gradient(to right, rgba(245, 240, 230, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(245, 240, 230, 0.15) 1px, transparent 1px);
+  background-size: 33.333% 33.333%;
 }
