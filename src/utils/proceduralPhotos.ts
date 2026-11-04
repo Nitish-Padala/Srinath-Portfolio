@@ -53,6 +53,9 @@ export function renderPhotoDataUrl(photo: PortfolioPhoto, width = 720, height = 
   if (photo.customDataUrl) {
     return photo.customDataUrl;
   }
+  if (photo.imageUrl) {
+    return resolveAssetUrl(photo.imageUrl);
+  }
   // If custom photograph is not yet uploaded, return the elegant luxury SVG frame
   return createLuxuryPlaceholderSvg(photo, width, height);
 }
@@ -124,7 +127,10 @@ export async function renderEditedGlobeTileCanvas(
   if (!ctx) return canvas;
 
   try {
-    const targetSource = photo.customDataUrl || createLuxuryPlaceholderSvg(photo, targetWidth, targetHeight);
+    const targetSource =
+      photo.customDataUrl ||
+      (photo.imageUrl ? resolveAssetUrl(photo.imageUrl) : '') ||
+      createLuxuryPlaceholderSvg(photo, targetWidth, targetHeight);
     const img = await loadCachedImageElement(targetSource);
     const srcW = img.naturalWidth || img.width || targetWidth;
     const srcH = img.naturalHeight || img.height || targetHeight;

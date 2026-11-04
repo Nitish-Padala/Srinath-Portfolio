@@ -198,15 +198,12 @@ export default function App() {
 
       {/* LUXURY EDITORIAL FOOTER */}
       <footer className="relative z-10 border-t border-[#EAE0D5] bg-[#EAE0D5]/50 py-10 px-4 text-center">
-        <div className="max-w-4xl mx-auto space-y-3">
-          <p className="font-serif text-lg sm:text-2xl text-[#3E2020] font-semibold tracking-wide">
+        <div className="max-w-4xl mx-auto space-y-2">
+          <p className="font-serif text-xl sm:text-2xl text-[#3E2020] font-semibold tracking-wide">
             Srinath Photography
           </p>
-          <p className="text-xs sm:text-sm text-[#C85A43] font-serif italic">
-            The Vintage Romance · Mobile-First Wedding &amp; Visual Storytelling
-          </p>
-          <div className="text-[11px] font-mono text-[#3E2020]/50 pt-2">
-            &copy; {new Date().getFullYear()} Srinath. All rights reserved. 150 Retained Photographic Frames.
+          <div className="text-xs font-mono text-[#3E2020]/60 pt-1">
+            &copy; {new Date().getFullYear()} Srinath Photography. All rights reserved.
           </div>
         </div>
       </footer>

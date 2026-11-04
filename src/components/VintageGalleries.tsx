@@ -64,19 +64,19 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
   return (
     <div className="space-y-16 sm:space-y-24 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
       {/* ============================================================== */}
-      {/* 1. 16:9 CINEMATIC HORIZONTAL SWIPE CAROUSEL (Panel 3)          */}
+      {/* 1. CINEMATIC WEDDING NARRATIVES (Horizon Carousel)             */}
       {/* ============================================================== */}
-      <section id="gallery-16-9" aria-label="16:9 Cinematic Carousel" className="space-y-4">
+      <section id="gallery-16-9" aria-label="Cinematic Carousel" className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <span className="inline-block px-3 py-1 rounded-full text-[11px] font-mono tracking-widest uppercase bg-[#C85A43]/15 text-[#C85A43] font-semibold mb-1">
-              16:9 Cinematic Horizon
+              Signature Horizons
             </span>
             <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#3E2020]">
-              Horizontal Swipe Carousel
+              Cinematic Wedding Narratives
             </h2>
             <p className="text-xs text-[#3E2020]/70 font-serif italic mt-0.5">
-              Panoramic widescreen wedding &amp; sacred ritual narratives
+              Panoramic ceremony vistas and sacred ritual emotions
             </p>
           </div>
 
@@ -84,7 +84,7 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
             <button
               type="button"
               onClick={handle16x9Prev}
-              aria-label="Previous 16:9 frame"
+              aria-label="Previous frame"
               className="w-10 h-10 rounded-full border border-[#EAE0D5] bg-[#EAE0D5] text-[#3E2020] hover:bg-[#C85A43] hover:text-[#F5F0E6] flex items-center justify-center transition-all cursor-pointer shadow-sm"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -92,7 +92,7 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
             <button
               type="button"
               onClick={handle16x9Next}
-              aria-label="Next 16:9 frame"
+              aria-label="Next frame"
               className="w-10 h-10 rounded-full border border-[#EAE0D5] bg-[#EAE0D5] text-[#3E2020] hover:bg-[#C85A43] hover:text-[#F5F0E6] flex items-center justify-center transition-all cursor-pointer shadow-sm"
             >
               <ChevronRight className="w-5 h-5" />
@@ -138,18 +138,18 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
       </section>
 
       {/* ============================================================== */}
-      {/* 2. 1:1 SEAMLESS SQUARE MOSAIC (Panel 3)                        */}
+      {/* 2. FINE ART & SYMMETRICAL MOMENTS (Square Mosaic)              */}
       {/* ============================================================== */}
-      <section id="gallery-1-1" aria-label="1:1 Square Mosaic" className="space-y-4">
+      <section id="gallery-1-1" aria-label="Square Mosaic" className="space-y-4">
         <div>
           <span className="inline-block px-3 py-1 rounded-full text-[11px] font-mono tracking-widest uppercase bg-[#C85A43]/15 text-[#C85A43] font-semibold mb-1">
-            1:1 Seamless Square Mosaic
+            Symmetrical Studios
           </span>
           <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#3E2020]">
-            Fine Art &amp; Symmetrical Studios
+            Fine Art &amp; Symmetrical Moments
           </h2>
           <p className="text-xs text-[#3E2020]/70 font-serif italic mt-0.5">
-            Zero-gap hairline mosaic of sacred rituals and floral geometry
+            Intimate rituals and candid wedding emotions
           </p>
         </div>
 
@@ -183,18 +183,18 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
       </section>
 
       {/* ============================================================== */}
-      {/* 3. 3:4 & 4:3 STAGGERED MASONRY LAYOUT (Panel 3)                */}
+      {/* 3. BRIDAL & CANDID MOMENTS (Documentary Staggered Layout)      */}
       {/* ============================================================== */}
-      <section id="gallery-masonry" aria-label="Staggered Masonry" className="space-y-4">
+      <section id="gallery-masonry" aria-label="Documentary Layout" className="space-y-4">
         <div>
           <span className="inline-block px-3 py-1 rounded-full text-[11px] font-mono tracking-widest uppercase bg-[#C85A43]/15 text-[#C85A43] font-semibold mb-1">
-            3:4 &amp; 4:3 Staggered Layout
+            Documentary Collection
           </span>
           <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#3E2020]">
-            Bridal Portraits &amp; Documentary Frames
+            Bridal &amp; Candid Moments
           </h2>
           <p className="text-xs text-[#3E2020]/70 font-serif italic mt-0.5">
-            Asymmetric editorial pairing of vertical portraits and horizontal ritual vistas
+            Editorial portraits and timeless ceremony vistas
           </p>
         </div>
 
@@ -271,23 +271,23 @@ export const VintageGalleries: React.FC<VintageGalleriesProps> = ({
       </section>
 
       {/* ============================================================== */}
-      {/* 4. 9:16 'APPLE RECENT APPS'-INSPIRED 3D COVERFLOW (Panel 3)    */}
+      {/* 4. VERTICAL STORIES (3D-Perspective Coverflow Carousel)        */}
       {/* ============================================================== */}
       <section
         id="gallery-9-16"
-        aria-label="9:16 Apple Recent Apps Carousel"
+        aria-label="Vertical Stories Carousel"
         className="rounded-[32px] p-6 sm:p-10 bg-[#EAE0D5] text-[#3E2020] shadow-xl border border-[#C8A97E]/30 space-y-6"
       >
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <span className="inline-block px-3 py-1 rounded-full text-[11px] font-mono tracking-widest uppercase bg-[#C85A43]/15 text-[#C85A43] font-semibold mb-2">
-              9:16 'Apple Recent Apps' Swiper
+              Vertical Stories
             </span>
             <h2 className="font-serif text-2xl sm:text-4xl font-semibold text-[#3E2020] tracking-tight">
-              3D-Perspective Coverflow Carousel
+              Candid Wedding Chronicles
             </h2>
             <p className="text-xs text-[#3E2020]/75 font-serif italic mt-1">
-              Swipe horizontally or click arrows to cycle through vertical cinematic stories
+              Swipe horizontally or click arrows to explore vertical moments
             </p>
           </div>
 

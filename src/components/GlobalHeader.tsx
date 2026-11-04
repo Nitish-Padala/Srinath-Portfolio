@@ -14,12 +14,12 @@ export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
 
   const navLinks = [
     { label: 'The Showcase', href: '#hero-section', number: '01' },
-    { label: '16:9 Cinematic Horizon', href: '#gallery-16-9', number: '02' },
-    { label: '1:1 Square Mosaic', href: '#gallery-1-1', number: '03' },
-    { label: '3:4 & 4:3 Staggered Masonry', href: '#gallery-masonry', number: '04' },
-    { label: '9:16 Apple Recent Apps', href: '#gallery-9-16', number: '05' },
+    { label: 'Cinematic Horizons', href: '#gallery-16-9', number: '02' },
+    { label: 'Symmetrical Moments', href: '#gallery-1-1', number: '03' },
+    { label: 'Bridal & Candid Portraits', href: '#gallery-masonry', number: '04' },
+    { label: 'Vertical Stories', href: '#gallery-9-16', number: '05' },
     { label: '3D Photo Globe', href: '#orb-section', number: '06' },
-    { label: 'Viewfinder & VIP Booking', href: '#vip-contact', number: '07' },
+    { label: 'VIP Concierge & Booking', href: '#vip-contact', number: '07' },
   ];
 
   const handleLinkClick = () => {

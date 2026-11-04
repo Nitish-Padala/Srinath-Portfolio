@@ -7,12 +7,66 @@ interface AutoSwipingHeroProps {
   onOpenFullscreen: (photo: PortfolioPhoto) => void;
 }
 
+/**
+ * 2 Signature Photographs from the 'intro' folder:
+ * - A3B_4111.jpg (photo-01.jpg): Sacred Ritual Union
+ * - DSC_2730.jpg (photo-02.jpg): The Eternal Vows
+ */
+const INTRO_HERO_PHOTOS: PortfolioPhoto[] = [
+  {
+    id: 'intro-photo-01',
+    index: 1,
+    title: 'Sacred Ritual Union',
+    caption: 'Signature Wedding Showcase',
+    exifSpec: '',
+    moodId: 'euphoria',
+    photographySpec: 'South Indian Wedding Ceremonies',
+    palette: ['#14110f', '#d48c29', '#ebe0cc'],
+    aspect: 'landscape',
+    aspectRatio: '16:9',
+    ratioFolder: 'intro',
+    imageUrl: 'photos/intro/photo-01.jpg',
+    filterStyle: 'brightness(1.02) contrast(1.06) saturate(1.08)',
+    objectPosition: '50% 32%',
+    focalX: 0.5,
+    focalY: 0.32,
+    cropZoom: 1.0,
+    widthRatio: 16,
+    heightRatio: 9,
+    tileW: 1.5,
+    tileH: 0.85,
+  },
+  {
+    id: 'intro-photo-02',
+    index: 2,
+    title: 'The Eternal Vows',
+    caption: 'Signature Wedding Showcase',
+    exifSpec: '',
+    moodId: 'warmth',
+    photographySpec: 'South Indian Wedding Ceremonies',
+    palette: ['#1c1613', '#8b1e1e', '#f5ebd9'],
+    aspect: 'landscape',
+    aspectRatio: '16:9',
+    ratioFolder: 'intro',
+    imageUrl: 'photos/intro/photo-02.jpg',
+    filterStyle: 'brightness(1.02) contrast(1.06) saturate(1.08)',
+    objectPosition: '50% 38%',
+    focalX: 0.5,
+    focalY: 0.38,
+    cropZoom: 1.0,
+    widthRatio: 16,
+    heightRatio: 9,
+    tileW: 1.5,
+    tileH: 0.85,
+  },
+];
+
 export const AutoSwipingHero: React.FC<AutoSwipingHeroProps> = ({
   photos,
   onOpenFullscreen,
 }) => {
-  // Use first 5 signature photographs for hero showcase
-  const heroSlides = photos.slice(0, 5);
+  // Use the 2 real intro photographs provided by the user
+  const heroSlides = INTRO_HERO_PHOTOS;
   const [activeIndex, setActiveIndex] = useState(0);
 
   // Auto-play interval: 5 seconds with cross-fade
@@ -24,19 +78,8 @@ export const AutoSwipingHero: React.FC<AutoSwipingHeroProps> = ({
     return () => window.clearInterval(interval);
   }, [heroSlides.length]);
 
-  const currentPhoto = heroSlides[activeIndex] || photos[0];
+  const currentPhoto = heroSlides[activeIndex] || heroSlides[0];
   if (!currentPhoto) return null;
-
-  // Metadata tags for the slides
-  const slideMetadata = [
-    'Mylapore, Chennai | 50mm f/1.2',
-    'Kalyanam Mandap | 85mm f/1.4',
-    'Thanjavur Palace | 35mm f/1.4',
-    'Twilight Courtyard | 50mm f/1.2',
-    'Sacred Vows | 85mm f/1.4',
-  ];
-
-  const currentMeta = slideMetadata[activeIndex % slideMetadata.length];
 
   return (
     <section
@@ -70,12 +113,12 @@ export const AutoSwipingHero: React.FC<AutoSwipingHeroProps> = ({
                 }`}
               >
                 <img
-                  src={renderPhotoDataUrl(photo, 1400, 1000)}
+                  src={renderPhotoDataUrl(photo, 1600, 1000)}
                   alt={photo.title}
                   loading={idx === 0 ? 'eager' : 'lazy'}
                   style={{
                     filter: photo.filterStyle || 'brightness(1.02) contrast(1.08) saturate(1.10)',
-                    objectPosition: '50% 28%',
+                    objectPosition: photo.objectPosition,
                   }}
                   className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700 ease-out"
                 />
@@ -89,10 +132,10 @@ export const AutoSwipingHero: React.FC<AutoSwipingHeroProps> = ({
 
           {/* Large Cinematic Typography Overlay */}
           <div className="absolute inset-x-0 bottom-12 sm:bottom-14 z-20 px-6 sm:px-10 max-w-xl text-left pointer-events-none">
-            {/* Metadata specification tag */}
+            {/* Elegant Signature Showcase badge without technical lens specs */}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#3E2020]/80 border border-[#C8A97E]/40 text-[#EAE0D5] text-[11px] sm:text-xs font-mono tracking-wider uppercase mb-3 backdrop-blur-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-[#C85A43] animate-pulse" />
-              <span>{currentMeta}</span>
+              <span>Signature Wedding Showcase</span>
             </div>
 
             <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-semibold text-[#F5F0E6] leading-[1.10] tracking-tight">

@@ -15,6 +15,7 @@ import {
 import {
   BookingContactConfig,
   PortfolioPhoto,
+  buildMailtoUrl,
   buildTelUrl,
   buildWhatsAppUrl,
   validateBookingInquiry,
@@ -85,6 +86,14 @@ export const ViewfinderBioContact: React.FC<ViewfinderBioContactProps> = ({
     }
     setFormError(null);
     setSubmitted(true);
+    // Dispatch direct mailto so the inquiry lands straight in Srinath's inbox
+    const mailtoUrl = buildMailtoUrl(
+      contactConfig.email,
+      'Wedding Photography Inquiry',
+      clientName,
+      `Client Contact: ${clientContact}\nPreferred Event Date: ${eventDate}\nVision & Details: ${notes}`
+    );
+    window.location.href = mailtoUrl;
   };
 
   const currentPolaroid = polaroidPhotos[polaroidIndex % totalPolaroids] || photos[0];
@@ -98,13 +107,13 @@ export const ViewfinderBioContact: React.FC<ViewfinderBioContactProps> = ({
       {/* Section Title */}
       <div className="text-center max-w-xl mx-auto space-y-2">
         <span className="inline-block px-3 py-1 rounded-full text-[11px] font-mono tracking-widest uppercase bg-[#C85A43]/15 text-[#C85A43] font-semibold">
-          Section 5 · Page 5 Blueprint
+          Concierge Commission
         </span>
         <h2 className="font-serif text-3xl sm:text-5xl font-semibold text-[#3E2020]">
           Viewfinder Bio &amp; VIP Contact Hub
         </h2>
         <p className="text-xs sm:text-sm text-[#3E2020]/75 font-serif italic">
-          Authentic camera interface overlay · Tinder-style polaroids · Direct concierge booking
+          Authentic camera interface overlay · Swipeable polaroids · Direct concierge booking
         </p>
       </div>
 
@@ -207,7 +216,7 @@ export const ViewfinderBioContact: React.FC<ViewfinderBioContactProps> = ({
 
                 {/* Info Spec indicator */}
                 <div className="text-right text-[10px] font-mono text-[#C8A97E]/80">
-                  <div>50mm f/1.2</div>
+                  <div>Live Focus</div>
                   <div className="text-[#EAE0D5]/60">Srinath Eye-AF</div>
                 </div>
               </div>
