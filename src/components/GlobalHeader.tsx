@@ -7,8 +7,8 @@ interface GlobalHeaderProps {
 }
 
 export const GlobalHeader: React.FC<GlobalHeaderProps> = ({
-  phone = '+919848052310',
-  whatsapp = '919848052310',
+  phone = '+917003895066',
+  whatsapp = '917003895066',
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 

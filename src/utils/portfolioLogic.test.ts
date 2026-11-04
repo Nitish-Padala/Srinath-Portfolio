@@ -112,9 +112,9 @@ test('computeOrbPositions distributes all 150 photos evenly on the 3D sphere wit
 });
 
 test('booking contact link builders and form validation work accurately', () => {
-  assert.equal(buildTelUrl('+91 98480 52310'), 'tel:+919848052310');
-  assert.ok(buildWhatsAppUrl('919848052310', 'Wedding Festivities').startsWith('https://wa.me/919848052310?text='));
-  assert.ok(buildMailtoUrl('srinath.frames@studio.in', 'Portraits & Intimate', 'Aarav').startsWith('mailto:srinath.frames@studio.in?subject='));
+  assert.equal(buildTelUrl('+91 70038 95066'), 'tel:+917003895066');
+  assert.ok(buildWhatsAppUrl('917003895066', 'Wedding Festivities').startsWith('https://wa.me/917003895066?text='));
+  assert.ok(buildMailtoUrl('kollasri147@gmail.com', 'Portraits & Intimate', 'Aarav').startsWith('mailto:kollasri147@gmail.com?subject='));
 
   assert.equal(validateBookingInquiry({ clientName: '', eventDate: '2026-12-10', eventType: 'Marriage', notes: '' }).valid, false);
   assert.equal(validateBookingInquiry({ clientName: 'Karthik', eventDate: '2026-12-10', eventType: 'Marriage', notes: 'Hyderabad' }).valid, true);

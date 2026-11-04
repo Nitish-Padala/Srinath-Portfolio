@@ -47,7 +47,12 @@ export default function App() {
     if (typeof window !== 'undefined') {
       try {
         const raw = window.localStorage.getItem('srinath_contact_config');
-        if (raw) return JSON.parse(raw);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.phone && !parsed.phone.includes('98480')) {
+            return parsed;
+          }
+        }
       } catch {
         // Ignore storage error
       }

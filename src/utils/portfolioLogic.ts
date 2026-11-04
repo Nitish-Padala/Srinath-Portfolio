@@ -145,9 +145,9 @@ export interface BookingContactConfig {
 
 export const DEFAULT_CONTACT_CONFIG: BookingContactConfig = {
   photographerName: 'Srinath',
-  phone: '+91 98480 52310',
-  whatsapp: '919848052310',
-  email: 'srinath.frames@studio.in',
+  phone: '+91 70038 95066',
+  whatsapp: '917003895066',
+  email: 'kollasri147@gmail.com',
   studioCity: 'Chennai, Hyderabad & Pan-India Commissions',
 };
 
@@ -674,11 +674,11 @@ export function handleStackZoneInteraction(
 
 export function buildTelUrl(phone: string): string {
   const cleaned = phone.replace(/[^\d+]/g, '');
-  return `tel:${cleaned || '+919848052310'}`;
+  return `tel:${cleaned || '+917003895066'}`;
 }
 
 export function buildWhatsAppUrl(whatsapp: string, moodTitle?: string, eventNote?: string): string {
-  const digits = whatsapp.replace(/\D/g, '') || '919848052310';
+  const digits = whatsapp.replace(/\D/g, '') || '917003895066';
   const message = eventNote
     ? `Hi Srinath! I explored your Photography Portfolio (${moodTitle || 'Selected Works'}). ${eventNote}`
     : `Hi Srinath! I loved exploring your Photography Portfolio and would love to inquire & book a shoot.`;
@@ -686,7 +686,7 @@ export function buildWhatsAppUrl(whatsapp: string, moodTitle?: string, eventNote
 }
 
 export function buildMailtoUrl(email: string, moodTitle?: string, clientName?: string, eventDetails?: string): string {
-  const targetEmail = email.trim() || 'srinath.frames@studio.in';
+  const targetEmail = email.trim() || 'kollasri147@gmail.com';
   const subject = `Photography Booking Inquiry for Srinath — ${moodTitle || 'Portfolio Work'}`;
   const body = [
     `Hi Srinath,`,
